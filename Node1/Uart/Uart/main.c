@@ -16,25 +16,34 @@
 #include "setup.h"
 
 #include "UART.h"
+#include "Joystick.h"
 
-uint8_t x, y;
+
 
 
 
 int main(void)
 {
+	joy_position joy_pos;
 	UART_Init(UBRREG);
 	ADC_init();
+	joy_init();
 	printf("----TING FUNK----\n\r");
 	//SRAM_test();
 	
 	while(1){
-		x = ADC_read(0);
-		printf("x er %x02 \n\r",x);
+	
+	joy_pos = JOY_getDirection();
+		 
+		printf("possisjon er %s \n\r",joy_pos.direction);
 		_delay_ms(100);
-		y = ADC_read(1);
-		printf("y er %x02 \n\r",y);
+		
+		printf("rettning x er %d \n\r",joy_pos.x);
 		_delay_ms(100);
+		
+		printf("rettning y er %d \n\r",joy_pos.y);
+		_delay_ms(100);
+
 		
 	}
 	return 0;

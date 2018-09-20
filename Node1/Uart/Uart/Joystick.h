@@ -14,9 +14,9 @@ typedef struct {
 	uint8_t right;
 } slider_position;
 
-int JOY_init(void);
+int joy_init(void);
 int JOY_calibrate(void);
-int JOY_button(int button);
+int joy_button(int button);
 joy_position JOY_getPosition(void);
 joy_position JOY_getDirection(void);
 slider_position JOY_getSliderPosition(void);

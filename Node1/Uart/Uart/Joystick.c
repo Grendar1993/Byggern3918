@@ -50,9 +50,9 @@ joy_position JOY_getPosition(void) {
 	uint8_t x, y;
 	
 	//Read position x from channel 0
-	x = ADC_read(0);
+	x = ADC_read(1);
 	//Read position y from channel 1
-	y = ADC_read(1);
+	y = ADC_read(0);
 	
 	//Calculate position x percentage
 	if(x > mid_x) {
