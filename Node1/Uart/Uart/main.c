@@ -1,3 +1,11 @@
+/*
+ * Uart.c
+ *
+ * Created: 04.09.2018 09.43.47
+ * Author : Grendar
+ */ 
+
+
 #define F_CPU 4912500 /*4912500UL*/
 #define BAUD 9600
 #define UBRREG F_CPU/16/BAUD-1
@@ -5,39 +13,33 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include "UART.h"
-#include "Joystick.h"
+#include "setup.h"
 
-void SRAM_test(void);
+#include "UART.h"
+
+uint8_t x, y;
+
+
 
 int main(void)
 {
-//	MCUCR= (1<<SRE);
-	SFIOR =(1<<XMM2);
-
-	DDRA = 0x01;
-	DDRC |= 0b00000111;
-	//unsigned int a = 0;
 	UART_Init(UBRREG);
-	printf("----T1N6 5UNK---- \n\r");
-//	SRAM_test();
-	 
+	ADC_init();
+	printf("----TING FUNK----\n\r");
+	//SRAM_test();
+	
 	while(1){
-		PORTC |= 0b00000110;
+		x = ADC_read(0);
+		printf("x er %x02 \n\r",x);
 		_delay_ms(100);
-		PORTC &= 0b00000100;
-		_delay_ms(100); 
+		y = ADC_read(1);
+		printf("y er %x02 \n\r",y);
+		_delay_ms(100);
 		
-	/*	PORTA |= (1 << 0);
-		_delay_ms(500);
-		PORTA &= ~ (1 << 0);
-		_delay_ms(500);
-		printf("Jeg skrev; %c\n\r",UART_RX());*/
 	}
 	return 0;
 }
-
+/*
 void SRAM_test(void)
 {
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
@@ -56,7 +58,7 @@ void SRAM_test(void)
 		uint8_t retreived_value = ext_ram[i];
 		if (retreived_value != some_value) 
 		{
-			printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i,retreived_value, some_value);
+			printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n", i,retreived_value, some_value);
 			write_errors++;
 		}
 	}
@@ -67,9 +69,10 @@ void SRAM_test(void)
 		uint8_t some_value = rand();
 		uint8_t retreived_value = ext_ram[i];
 		if (retreived_value != some_value) {
-			printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r",i, retreived_value, some_value);
+			printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n",i, retreived_value, some_value);
 			retrieval_errors++;
 		}
 	}
 	printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase \n \n", write_errors, retrieval_errors);
 }
+*/

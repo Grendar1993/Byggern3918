@@ -18,7 +18,7 @@ int joy_init(void){
 	//kalibrasjon init
 	JOY_calibrate();
 	
-	return 0
+	return 0;
 }
 
 
