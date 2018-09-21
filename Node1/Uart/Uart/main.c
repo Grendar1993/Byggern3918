@@ -5,7 +5,6 @@
  * Author : Grendar
  */ 
 
-
 #define F_CPU 4912500 /*4912500UL*/
 #define BAUD 9600
 #define UBRREG F_CPU/16/BAUD-1
@@ -18,13 +17,12 @@
 #include "UART.h"
 #include "Joystick.h"
 
-
-
-
-
 int main(void)
 {
 	joy_position joy_pos;
+	slider_position slider_pos;
+	int left_b;
+	int right_b;
 	UART_Init(UBRREG);
 	ADC_init();
 	joy_init();
@@ -34,16 +32,12 @@ int main(void)
 	while(1){
 	
 	joy_pos = JOY_getDirection();
-		 
-		printf("possisjon er %s \n\r",joy_pos.direction);
-		_delay_ms(100);
-		
-		printf("rettning x er %d \n\r",joy_pos.x);
-		_delay_ms(100);
-		
-		printf("rettning y er %d \n\r",joy_pos.y);
-		_delay_ms(100);
-
+	slider_pos = JOY_getSliderPosition();
+	left_b = joy_button(1);
+	right_b = joy_button(2);
+	
+	printf("Right button: %d, Left button: %d, Right Slider: %d, Left Slider: %d, Joy-pos: %s \n \r \n \r", right_b, left_b, slider_pos.right, slider_pos.left, joy_pos.direction);
+ 	_delay_ms(200);
 		
 	}
 	return 0;
