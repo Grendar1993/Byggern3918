@@ -14,7 +14,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include "setup.h"
-
+#include "ADC.h"
 #include "UART.h"
 #include "Joystick.h"
 
