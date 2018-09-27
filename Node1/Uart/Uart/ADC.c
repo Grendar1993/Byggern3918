@@ -1,6 +1,5 @@
 /*
- * ADC.c
- *
+ * ADC.c *
  * Created: 20.09.2018 16.44.27
  *  Author: Max-Pc
  */ 
