@@ -12,7 +12,7 @@ typedef struct {
 typedef struct {
 	uint8_t left;
 	uint8_t right;
-} slider_position;
+} slider_position; 
 
 int joy_init(void);
 int JOY_calibrate(void);

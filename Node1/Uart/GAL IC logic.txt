@@ -13,4 +13,7 @@ adc_cs  = P18
 oled_cs = P17
 oled_dc = P16
 
-a9 (PC1) kobles opp mot D/C (Data/Command)
+a11 høy --> velger ram_cs
+a10 høy --> velger adc_cs
+a9 høy  --> velger oled_cs
+a8 høy  --> velger oled_dc

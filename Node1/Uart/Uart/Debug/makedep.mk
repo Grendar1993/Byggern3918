@@ -10,7 +10,5 @@ main.c
 
 oled.c
 
-sram.c
-
 UART.c
 

@@ -142,12 +142,6 @@
     <Compile Include="ADC.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="font_8x8.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="font_drawings.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="Joystick.c">
       <SubType>compile</SubType>
     </Compile>
@@ -161,12 +155,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="sram.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="sram.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="UART.c">
