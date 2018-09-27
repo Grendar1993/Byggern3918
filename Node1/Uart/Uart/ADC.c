@@ -16,7 +16,7 @@ int ADC_init(void) {
 	SFIOR |= (1<<XMM2);
 	
 	//Set the interrupt pin to input
-	DDRB &= ~(1<<PIND2);
+	//DDRB &= ~(1<<PIND2);
 	
 	return 0;
 }

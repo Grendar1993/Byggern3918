@@ -12,34 +12,133 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
+#include <string.h>
+#include <avr/interrupt.h>
 #include "setup.h"
 #include "ADC.h"
 #include "UART.h"
 #include "Joystick.h"
+#include "oled.h"
+#include "sram.h"
+#include "menu.h"
 
 int main(void)
 {
+	
+	
+	
+	struct screen *display_screen;
+	char *prev_screen = " ";
+	char *joy_direction = " ";
+	//CAN_message_t can_msg_send;
+	//CAN_message_t can_msg_receive;
 	joy_position joy_pos;
 	slider_position slider_pos;
-	int left_b;
-	int right_b;
+	int8_t score = 0;
+	uint8_t lives = 3;
+	int button_pressed = 0;
+	int prev_button = 0;
+	//joy_position joy_pos;
+	//slider_position slider_pos;
+	//int left_b;
+	//int right_b;
 	UART_Init(UBRREG);
 	ADC_init();
 	joy_init();
+	SRAM_init();
+	OLED_init();
+	init_menu();
+	
+	
+	
+	
+
+	
 	printf("----TING FUNK----\n\r");
 	//SRAM_test();
 	
-	while(1){
-	
-	joy_pos = JOY_getDirection();
-	slider_pos = JOY_getSliderPosition();
-	left_b = joy_button(1);
-	right_b = joy_button(2);
-	
-	printf("Right button: %d, Left button: %d, Right Slider: %d, Left Slider: %d, Joy-pos: %s \n \r \n \r", right_b, left_b, slider_pos.right, slider_pos.left, joy_pos.direction);
- 	_delay_ms(200);
-		
+	if (joy_init() == 0) {
+		printf("----Joystick working----\n\r");
+		} else {
+		printf("----Joystick error!!----\n\r");
 	}
+	OLED_clear();
+//	OLED_sram_clear();
+	//OLED_sram_draw_mario();
+	OLED_pos(1, 5);
+	OLED_print("Ping Pong");
+	OLED_pos(2, 5);
+	OLED_print("Ping Pong");
+	OLED_pos(3, 4);
+	OLED_print("Press Button");
+	OLED_pos(4, 5);
+	OLED_print("to start");
+	OLED_pos(5, 5);
+	OLED_print("Ping Pong");
+	OLED_pos(6, 5);
+	OLED_print("Ping Pong");
+	OLED_pos(7, 5);
+	OLED_print("Ping Pong");
+	OLED_pos(8, 5);
+	OLED_print("Ping Pong");
+	display_screen = init_menu();
+	
+	while(1){
+//------------Menu------------//
+	if (display_screen->game_on == 0) {
+	
+		//Get joystick position
+		joy_pos = JOY_getDirection();
+		
+		if (strcmp(joy_pos.direction,"UP") == 0) {
+			joy_direction = "UP";
+			//Avoid changing selection too fast
+			_delay_ms(300);
+			} else if (strcmp(joy_pos.direction,"DOWN") == 0) {
+			joy_direction = "DOWN";
+			//Avoid changing selection too fast
+			_delay_ms(300);
+			} else if (strcmp(joy_pos.direction,"LEFT") == 0) {
+			joy_direction = "LEFT";
+			//Avoid changing selection too fast
+			_delay_ms(300);
+			} else if (strcmp(joy_pos.direction,"RIGHT") == 0) {
+			joy_direction = "RIGHT";
+			//Avoid changing selection too fast
+			_delay_ms(300);
+			} else {
+			joy_direction = " ";
+		}
+		
+		//Check for option selected
+		if (joy_button(0) == 1) {
+			//Remove bouncing
+			while (joy_button(0) == 1);
+			
+			if (display_screen->child_selected >= 0) {
+				if (display_screen->child[display_screen->child_selected] != NULL) {
+					display_screen = display_screen->child[display_screen->child_selected];
+				}
+				} else {
+				display_screen = display_screen->parent;
+			}
+// 			
+// 			Change song depending on screen
+// 				if ((strcmp(display_screen->name,"main") == 0) && (strcmp(prev_screen,"options") != 0))
+// 				//BUZZER_play_song(display_screen->name);
+// 			
+// 				else if (strcmp(display_screen->name,"game") == 0)
+// 				//BUZZER_play_song(display_screen->name);
+// 				
+// 				prev_screen = display_screen->name;
+// 			}
+// 				
+// 				
+// 			Refresh the screen
+			//draw_screen(display_screen, joy_direction, lives, score);
+	 		//OLED_refresh();
+// 		
+}
 	return 0;
 }
 /*
