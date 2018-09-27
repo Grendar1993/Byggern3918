@@ -1,0 +1,16 @@
+ram_cs  <= a11;						-- SRAM chipselect is active high
+adc_cs  <= (NOT a10) AND (NOT a11) AND a9;		-- ADC and OLED chipselects are active low
+oled_cs <= (a10) AND (NOT a11) AND (NOT a9);	        -- OLED data/!command
+oled_dc <= a8;
+
+a11 = P1 = PC3			--RAM
+a10 = P2 = PC2			--OLED_CS
+a9  = P3 = PC1			--ADC
+a8  = P4 = PC0			--OLED_DC
+
+ram_cs  = P19
+adc_cs  = P18
+oled_cs = P17
+oled_dc = P16
+
+a9 (PC1) kobles opp mot D/C (Data/Command)
