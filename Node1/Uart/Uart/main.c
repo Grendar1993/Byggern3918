@@ -1,10 +1,3 @@
-/*
- * Uart.c
- *
- * Created: 04.09.2018 09.43.47
- * Author : Grendar
- */ 
-
 #define F_CPU 4912500 /*4912500UL*/
 #define BAUD 9600
 #define UBRREG F_CPU/16/BAUD-1
@@ -48,6 +41,7 @@ int main(void)
 	SRAM_init();
 	OLED_init();
 	init_menu();
+	JOY_calibrate();
 	
 	
 	
@@ -55,16 +49,13 @@ int main(void)
 
 	
 	printf("----TING FUNK----\n\r");
-	//SRAM_test();
-	
+
 	if (joy_init() == 0) {
 		printf("----Joystick working----\n\r");
 		} else {
 		printf("----Joystick error!!----\n\r");
 	}
 	OLED_clear();
-//	OLED_sram_clear();
-	//OLED_sram_draw_mario();
 	OLED_pos(1, 5);
 	OLED_print("Ping Pong");
 	OLED_pos(2, 5);
@@ -73,72 +64,23 @@ int main(void)
 	OLED_print("Press Button");
 	OLED_pos(4, 5);
 	OLED_print("to start");
-	OLED_pos(5, 5);
-	OLED_print("Ping Pong");
-	OLED_pos(6, 5);
-	OLED_print("Ping Pong");
-	OLED_pos(7, 5);
-	OLED_print("Ping Pong");
-	OLED_pos(8, 5);
-	OLED_print("Ping Pong");
-	display_screen = init_menu();
 	
 	while(1){
+	joy_pos = JOY_getDirection();
+
+	init_menu();
+
+	printf("x; %d\n\r",ADC_read(1));
+	printf("y; %d\n\r",ADC_read(0));
+	printf("rettning: %s\n\r",joy_pos.direction);
+
+
+
 //------------Menu------------//
-	if (display_screen->game_on == 0) {
-	
-		//Get joystick position
-		joy_pos = JOY_getDirection();
-		
-		if (strcmp(joy_pos.direction,"UP") == 0) {
-			joy_direction = "UP";
-			//Avoid changing selection too fast
-			_delay_ms(300);
-			} else if (strcmp(joy_pos.direction,"DOWN") == 0) {
-			joy_direction = "DOWN";
-			//Avoid changing selection too fast
-			_delay_ms(300);
-			} else if (strcmp(joy_pos.direction,"LEFT") == 0) {
-			joy_direction = "LEFT";
-			//Avoid changing selection too fast
-			_delay_ms(300);
-			} else if (strcmp(joy_pos.direction,"RIGHT") == 0) {
-			joy_direction = "RIGHT";
-			//Avoid changing selection too fast
-			_delay_ms(300);
-			} else {
-			joy_direction = " ";
-		}
-		
-		//Check for option selected
-		if (joy_button(0) == 1) {
-			//Remove bouncing
-			while (joy_button(0) == 1);
-			
-			if (display_screen->child_selected >= 0) {
-				if (display_screen->child[display_screen->child_selected] != NULL) {
-					display_screen = display_screen->child[display_screen->child_selected];
-				}
-				} else {
-				display_screen = display_screen->parent;
-			}
-// 			
-// 			Change song depending on screen
-// 				if ((strcmp(display_screen->name,"main") == 0) && (strcmp(prev_screen,"options") != 0))
-// 				//BUZZER_play_song(display_screen->name);
-// 			
-// 				else if (strcmp(display_screen->name,"game") == 0)
-// 				//BUZZER_play_song(display_screen->name);
-// 				
-// 				prev_screen = display_screen->name;
-// 			}
-// 				
-// 				
-// 			Refresh the screen
-			//draw_screen(display_screen, joy_direction, lives, score);
-	 		//OLED_refresh();
-// 		
-}
+	init_menu();
+
+	}
+
 	return 0;
 }
 /*
