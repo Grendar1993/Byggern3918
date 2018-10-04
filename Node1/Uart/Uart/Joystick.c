@@ -81,19 +81,21 @@ joy_position JOY_getDirection(void) {
 	//Get actual position of joystick
 	position = JOY_getPosition();
 	
-	if(position.x < -15) {
+	if(position.x < -45) {
 		position.direction = "LEFT";
-		} else if(position.x > 15) {
+		} 
+	else if(position.x > 45) {
 		position.direction = "RIGHT";
 	}
 	
-	if(position.y < -15) {
+	if(position.y < -45) {
 		position.direction = "DOWN";
-		} else if(position.y > 15) {
+		} 
+	else if(position.y > 45) {
 		position.direction = "UP";
 	}
 	
-	if((position.x >= -14 && position.x <= 14) && (position.y >= -14 && position.y <= 14)){
+	if((position.x >= -44 && position.x <= 44) && (position.y >= -44 && position.y <= 44)){
 		position.direction = "NEUTRAL";
 	}
 	

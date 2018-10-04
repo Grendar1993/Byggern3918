@@ -7,123 +7,195 @@
 #include "menu.h"
 #include "Joystick.h"
 
-//#include "buzzer.h"
-//#include "eeprom.h"
-
-char menynummer='0';
+char menynummer='1';	// Ved oppstart står submenyen på øverste alternativ
+char submenynummer='1'; // Ved oppstart står submenyen på øverste alternativ
 
 int init_menu(void) {
 	joy_position joy_pos;
 	joy_init();
-	joy_pos = JOY_getDirection();
-
 
 switch(menynummer){
-	case '1' :
+	case '1' : // Start Game
 			OLED_clear();
-			OLED_pos(1, 4);
+			OLED_pos(1, 1);
 			OLED_print("* Start game");
-			OLED_pos(3, 4);
+			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
-			OLED_pos(5, 4);
+			OLED_pos(5, 1);
 			OLED_print("  Options");
-			OLED_pos(7, 4);
+			OLED_pos(7, 1);
 			OLED_print("  Music");
-			_delay_ms(300);
+			_delay_ms(200);
 		while(menynummer=='1'){
-			joy_pos = JOY_getDirection();
-// 			OLED_pos(radvelger, 1);
-// 			OLED_print("*");
+		joy_pos = JOY_getDirection();
+			_delay_ms(50);
 			if (joy_pos.direction=="DOWN"){
-				menynummer='2' ;
-				break;
+				menynummer='2';
 			}
 			else if (joy_pos.direction=="UP"){
-				menynummer='1' ;
-				break;
+				menynummer='4';
 			}
-			// definere peker
 		}
-	case '2' :
+		break;
+	case '2' : // Difficulty
 			OLED_clear();
-			OLED_pos(1, 4);
+			OLED_pos(1, 1);
 			OLED_print("  Start game");
-			OLED_pos(3, 4);
+			OLED_pos(3, 1);
 			OLED_print("* Difficulty");
-			OLED_pos(5, 4);
+			OLED_pos(5, 1);
 			OLED_print("  Options");
-			OLED_pos(7, 4);
+			OLED_pos(7, 1);
 			OLED_print("  Music");
-			_delay_ms(300);
+			_delay_ms(200);
 			while(menynummer=='2'){
 			joy_pos = JOY_getDirection();
-				// 			OLED_pos(radvelger, 1);
-				// 			OLED_print("*");
-				if (joy_pos.direction=="DOWN"){
+			_delay_ms(50);
+				if (joy_pos.direction == "DOWN"){
 					menynummer='3' ;
-					break;
 				}
-				else if (joy_pos.direction=="UP"){
+				else if (joy_pos.direction == "UP"){
 					menynummer='1' ;
-					break;
 				}
-				// definere peker
+				else if (joy_button(1) == 0){
+					menynummer='5';
+				}
 			}
-
-	case '3' :
+			break;
+	case '3' : // Options
 			OLED_clear();
-			OLED_pos(1, 4);
+			OLED_pos(1, 1);
 			OLED_print("  Start game");
-			OLED_pos(3, 4);
+			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
-			OLED_pos(5, 4);
+			OLED_pos(5, 1);
 			OLED_print("* Options");
-			OLED_pos(7, 4);
+			OLED_pos(7, 1);
 			OLED_print("  Music");
-			_delay_ms(300);
+			_delay_ms(200);
 			while(menynummer=='3'){
 			joy_pos = JOY_getDirection();
-				// 			OLED_pos(radvelger, 1);
-				// 			OLED_print("*");
+			_delay_ms(50);
 				if (joy_pos.direction=="DOWN"){
-					menynummer='4' ;
-					break;
+					menynummer='4';
 				}
 				else if (joy_pos.direction=="UP"){
-					menynummer='2' ;
-					break;
+					menynummer='2';
 				}
-				// definere peker
 			}
-	case '4' :			
+			break;
+	case '4' :			//music
 			OLED_clear();
-			OLED_pos(1, 4);
+			OLED_pos(1, 1);
 			OLED_print("  Start game");
-			OLED_pos(3, 4);
+			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
-			OLED_pos(5, 4);
+			OLED_pos(5, 1);
 			OLED_print("  Options");
-			OLED_pos(7, 4);
+			OLED_pos(7, 1);
 			OLED_print("* Music");
-			_delay_ms(300);
+			_delay_ms(200);
 			while(menynummer=='4'){
 			joy_pos = JOY_getDirection();
-			// 			OLED_pos(radvelger, 1);
-			// 			OLED_print("*");
+			_delay_ms(50);
 				if (joy_pos.direction=="DOWN"){
-					menynummer='4' ;
-					break;
+					menynummer='1';
 				}
 				else if (joy_pos.direction=="UP"){
-					menynummer='3' ;
-					break;
+					menynummer='3';
 				}
-		// definere peker
 			}
-    
-	default:
- 		if (joy_pos.direction == "DOWN") {
-	 		OLED_clear();
-	 		menynummer = '1';
- 		}
-}}
+			break;
+	case '5' : // Submeny difficulty easy
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("* Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='5'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='6';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='8';
+				}
+			}
+			break;	
+	case '6' : // Submeny difficulty medium
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("* Medium");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='6'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='7';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='5';
+				}
+			}
+			break;	
+	case '7' : // Submeny difficulty hard
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print("* Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='7'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='8';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='6';
+				}
+			}
+			break;	
+	case '8' : // Submeny difficulty return
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("* Back");
+			_delay_ms(200);
+			while(menynummer=='8'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='5';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='7';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='1';
+				}
+			}
+			break;	
+		}
+	}

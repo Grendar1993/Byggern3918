@@ -69,10 +69,11 @@ int main(void)
 	joy_pos = JOY_getDirection();
 
 	init_menu();
-
-	printf("x; %d\n\r",ADC_read(1));
-	printf("y; %d\n\r",ADC_read(0));
-	printf("rettning: %s\n\r",joy_pos.direction);
+	printf("Hoyre knapp: %d, ", joy_button(0));
+	printf("Venstre knapp: %d, ", joy_button(1));
+	printf("x: %d ,",ADC_read(1));
+	printf("y: %d ,",ADC_read(0));
+	printf("Retning: %s\n\r",joy_pos.direction);
 
 
 
