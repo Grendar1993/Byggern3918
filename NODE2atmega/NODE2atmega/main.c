@@ -2,34 +2,77 @@
 	#define F_CPU 16000000
 	#define BAUD 9600
 	#define UBRREG F_CPU/16/BAUD-1
-    #include <avr/io.h>
-    #include "UART.h"
+  
     #include <stdio.h>
-    #include <stdlib.h>
-    #include <util/delay.h>
+	#include <avr/io.h>
+	#include <util/delay.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <avr/interrupt.h>
+	#include <avr/sfr_defs.h>
+	#include "setup.h"
+	#include "UART.h"
+	#include "MCP2515.h"
+	#include "spi.h"
+	#include "can.h"
+	
+	uint8_t x, y;
+	uint8_t i=0;
+	
 
     int main(void){
-	    UART_Init(UBRREG);
-
+		
+		cli();
+		
+		
+		
+		EICRA |= (0 << ISC21) | (0 << ISC20);
+		// Enable external interrupts of INT2
+		EIMSK |= (1 << INT2);
+		
+		DDRD &= ~(1 << PIND2);		//Set D2(INT2) as input
+		
 		int variabel = 1;
+		
+		can_msg can_msg_send;
+		can_msg can_msg_receive;
+		
+		UART_Init(UBRREG);
+// 		SPI_init();
+// 		MCP_init();
 
-	    /* Replace with your application code */
+		if (CAN_init() == 0) {
+			printf("CAN BE WORKING\n\r");
+			can_msg_send.id = 1;
+			can_msg_send.length = 8;
+			} else {
+			printf("CAN NOT BE WORKING \n\r");
+		}
+
+		sei();
+
 	while(1){
-			variabel++;
-			if(variabel==300){
-	    	printf("pliz funk:%d \n\r", variabel);
-			_delay_ms(300);	
+
+			
+			can_msg_send.data[0] = 0x10;
+			i=i+1;
+			if (i>0xFF)
+			{
+				i=0;
 			}
-			if(variabel>300){
-				while(variabel!=0){
-					variabel--;
-					if(variabel==0){
-					printf("pliz funk:%d \n\r", variabel);
-					_delay_ms(300);	
-					}
-				}
-			}
-								
+			can_msg_send.data[1] = i;
+			
+			CAN_message_send(&can_msg_send);
+			can_msg_receive = CAN_data_receive();
+			x=can_msg_receive.data[0];
+			y=can_msg_receive.data[1];
+			printf("CANSTAT: %02x\n\r", MCP_read(MCP_CANSTAT));
+			printf("CANINTF: %02x\n\r",MCP_read(MCP_CANINTF));
+			printf("CANTERF: %02x\n\r",MCP_read(MCP_RX0IF));
+			printf("TXb0CTRL: %02x\n\r",MCP_read(MCP_TXB0CTRL));
+			printf("y1 er %02x \n\r",x);
+			printf("y2 er %02x \n\r",y);
+			_delay_ms(250);					
 		    }
 
 }

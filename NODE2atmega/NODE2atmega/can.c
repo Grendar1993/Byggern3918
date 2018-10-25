@@ -33,7 +33,7 @@ int CAN_init(void) {
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
-	if ((value & MODE_MASK) != MODE_NORMAL){
+	if ((value & MODE_MASK) != MODE_LOOPBACK){
 		printf("ERROR..ERROR...LOOPBACK NOT WORKING");
 		return 1;
 	}
@@ -139,7 +139,7 @@ can_msg CAN_data_receive(void) {
 }
 
 //Interrupt service routine for CAN bus
-ISR(INT0_vect) {
+ISR(INT2_vect) {
 //	_delay_ms(10);
 	CAN_int_vect();
 // printf("ghjkhk\r\n");
