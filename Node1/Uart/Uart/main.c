@@ -38,7 +38,6 @@ int main(void)
 	
 	cli();
 	
-	DDRD &= ~(1 << PIND2);		//Set D2(INT0) as input
 	//DDRD |= (1 << PIND5);		//Set D5(OC1A) as output
 	
 	
@@ -46,6 +45,8 @@ int main(void)
 	GICR  |= (1 << INT0);		//Enable INT0
 	MCUCR |= (0 << ISC01) | (0 << ISC00);	//On falling edge
 	
+	
+	DDRD &= ~(1 << PIND2);		//Set D2(INT0) as input
 	
 	can_msg can_msg_send;
 	can_msg can_msg_receive;
@@ -83,6 +84,7 @@ int main(void)
 	uint8_t lives = 3;
 	int button_pressed = 0;
 	int prev_button = 0;
+	uint8_t i=0;
 	
 	
 	
@@ -116,20 +118,24 @@ int main(void)
 	printf("y: %d ,",ADC_read(0));
 	printf("Retning: %s\n\r",joy_pos.direction);
 	
-	can_msg_send.data[0] = joy_pos.x;
-	can_msg_send.data[1] = joy_pos.y;
+	//can_msg_send.data[0] = joy_pos.x;
+	//can_msg_send.data[1] = joy_pos.y;
+	
+ 			can_msg_send.data[0] = 0x10;
+ 			i=i+1;
+ 			if (i>0xFF)
+ 			{
+ 				i=0;
+ 			}
+ 			can_msg_send.data[1] = i;
 	
 	CAN_message_send(&can_msg_send);
-	can_msg_receive = CAN_data_receive();
-	x=can_msg_receive.data[0];
-	y=can_msg_receive.data[1];
-// 	printf("CANSTAT: %02x\n\r", MCP_read(MCP_CANSTAT));
-// 	printf("CANINTF: %02x\n\r",MCP_read(MCP_CANINTF));
-// 	printf("CANTERF: %02x\n\r",MCP_read(MCP_RX0IF));
-// 	printf("TXb0CTRL: %02x\n\r",MCP_read(MCP_TXB0CTRL));
- 	printf("y1 er %02x \n\r",x);
-	printf("y2 er %02x \n\r",y);
-	_delay_ms(1000);
+// 	can_msg_receive = CAN_data_receive();
+// 	x=can_msg_receive.data[0];
+// 	y=can_msg_receive.data[1];
+//  	printf("y1 er %02x \n\r",x);
+// 	printf("y2 er %02x \n\r",y);
+	_delay_ms(250);
 
 
 

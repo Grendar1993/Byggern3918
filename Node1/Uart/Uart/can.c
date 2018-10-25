@@ -30,7 +30,7 @@ int CAN_init(void) {
 	MCP_bit_modify(MCP_CANINTE, MCP_RX_INT, 0x01);
 	
 	//Enable normal mode
-	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
+	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
