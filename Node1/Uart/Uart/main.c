@@ -1,54 +1,91 @@
+/*
+ * Uart.c
+ *
+ * Created: 04.09.2018 09.43.47
+ * Author : Grendar
+ */ 
+
+
 #define F_CPU 4912500 /*4912500UL*/
 #define BAUD 9600
 #define UBRREG F_CPU/16/BAUD-1
+
+
+
+
+int x, y;
+
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
 #include <string.h>
 #include <avr/interrupt.h>
+#include <avr/sfr_defs.h>
 #include "setup.h"
 #include "ADC.h"
 #include "UART.h"
 #include "Joystick.h"
 #include "oled.h"
 #include "sram.h"
-#include "menu.h"
+//#include "menu.h"
+#include "MCP2515.h"
+#include "spi.h"
+#include "can.h"
 
 int main(void)
 {
 	
+	cli();
+	
+	DDRD &= ~(1 << PIND2);		//Set D2(INT0) as input
+	//DDRD |= (1 << PIND5);		//Set D5(OC1A) as output
+	
+	
+	
+	GICR  |= (1 << INT0);		//Enable INT0
+	MCUCR |= (0 << ISC01) | (0 << ISC00);	//On falling edge
+	
+	
+	can_msg can_msg_send;
+	can_msg can_msg_receive;
+	
+	UART_Init(UBRREG);
+	ADC_init();
+	SPI_init();
+	MCP_init();
+	joy_init();
+	SRAM_init();
+	//OLED_init();
+	//init_menu();
+	JOY_calibrate();
+	
+	if (CAN_init() == 0) {
+		printf("CAN BE WORKING\n\r");
+		can_msg_send.id = 1;
+		can_msg_send.length = 8;
+		} else {
+		printf("CAN NOT BE WORKING \n\r");
+	}
+	
+	
+	
+	//SRAM_test();
 	
 	
 	struct screen *display_screen;
 	char *prev_screen = " ";
 	char *joy_direction = " ";
-	//CAN_message_t can_msg_send;
-	//CAN_message_t can_msg_receive;
+	
 	joy_position joy_pos;
 	slider_position slider_pos;
 	int8_t score = 0;
 	uint8_t lives = 3;
 	int button_pressed = 0;
 	int prev_button = 0;
-	//joy_position joy_pos;
-	//slider_position slider_pos;
-	//int left_b;
-	//int right_b;
-	UART_Init(UBRREG);
-	ADC_init();
-	joy_init();
-	SRAM_init();
-	OLED_init();
-	init_menu();
-	JOY_calibrate();
 	
 	
 	
-	
-
-	
-	printf("----TING FUNK----\n\r");
 
 	if (joy_init() == 0) {
 		printf("----Joystick working----\n\r");
@@ -65,20 +102,37 @@ int main(void)
 	OLED_pos(4, 5);
 	OLED_print("to start");
 	
+	printf("----TING FUNK----\n\r");
+	
+	sei();
+	
 	while(1){
 	joy_pos = JOY_getDirection();
 
-	init_menu();
+	//init_menu();
 	printf("Hoyre knapp: %d, ", joy_button(0));
 	printf("Venstre knapp: %d, ", joy_button(1));
 	printf("x: %d ,",ADC_read(1));
 	printf("y: %d ,",ADC_read(0));
 	printf("Retning: %s\n\r",joy_pos.direction);
+	
+	can_msg_send.data[0] = joy_pos.x;
+	can_msg_send.data[1] = joy_pos.y;
+	
+	CAN_message_send(&can_msg_send);
+	can_msg_receive = CAN_data_receive();
+	x=can_msg_receive.data[0];
+	y=can_msg_receive.data[1];
+// 	printf("CANSTAT: %02x\n\r", MCP_read(MCP_CANSTAT));
+// 	printf("CANINTF: %02x\n\r",MCP_read(MCP_CANINTF));
+// 	printf("CANTERF: %02x\n\r",MCP_read(MCP_RX0IF));
+// 	printf("TXb0CTRL: %02x\n\r",MCP_read(MCP_TXB0CTRL));
+ 	printf("y1 er %02x \n\r",x);
+	printf("y2 er %02x \n\r",y);
+	_delay_ms(250);
 
 
 
-//------------Menu------------//
-	init_menu();
 
 	}
 
