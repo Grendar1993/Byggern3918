@@ -2,7 +2,7 @@
 #include <avr/pgmspace.h>
 #include <stdio.h>
 #include "font_8x8.h"
-#include "font_drawings.h"
+#include "figures.h"
 #include "oled.h"
 #include "sram.h"
 
@@ -165,6 +165,19 @@ int OLED_print_char(char c) {
 	
 	return 0;
 }
+
+int OLED_print_startscr(int col) {  //fig = figurnummer, col = kolonnenummer (hvor på skjermen skal figuren printes)
+	//Write the complete figure
+	for (int y = 0; y < 7; y++){
+		OLED_pos(y, col);
+		for (int i = 0; i < 128; i++) {
+			*OLED_data = pgm_read_byte(&ntnu[y+1][i]);
+		}
+	}
+	
+	return 0;
+}
+
 
 int OLED_print(char *data) {
 	int i = 0;

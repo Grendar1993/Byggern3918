@@ -7,14 +7,44 @@
 #include "menu.h"
 #include "Joystick.h"
 
-char menynummer='1';	// Ved oppstart står submenyen på øverste alternativ
-char submenynummer='1'; // Ved oppstart står submenyen på øverste alternativ
-
+char menynummer='0';	// Ved oppstart faar vi startskjerm
 int init_menu(void) {
 	joy_position joy_pos;
 	joy_init();
 
 switch(menynummer){
+	case '0' : // Velkommen
+				OLED_clear();
+ 				OLED_pos(7,1);
+ 				OLED_print("Press any key");
+				for (int x = 0; x < 18; x++){
+					OLED_print_startscr(x);
+					_delay_ms(50);
+				}
+				_delay_ms(200);
+				while(menynummer=='0'){
+					joy_pos = JOY_getDirection();
+					_delay_ms(50);
+					if (joy_pos.direction=="DOWN"){
+						menynummer='1';
+					}
+					else if (joy_pos.direction=="UP"){
+						menynummer='1';
+					}
+					else if (joy_pos.direction=="LEFT"){
+						menynummer='1';
+					}
+					else if (joy_pos.direction=="RIGHT"){
+						menynummer=='1';
+					}
+// 					else if (joy_button(0) == 0){
+// 						menynummer='1';
+// 					}
+// 					else if (joy_button(1) == 0){
+// 						menynummer='1';
+// 					}
+				}
+				break;
 	case '1' : // Start Game
 			OLED_clear();
 			OLED_pos(1, 1);
@@ -22,7 +52,7 @@ switch(menynummer){
 			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
 			OLED_pos(5, 1);
-			OLED_print("  Options");
+			OLED_print("  Highscores");
 			OLED_pos(7, 1);
 			OLED_print("  Music");
 			_delay_ms(200);
@@ -44,7 +74,7 @@ switch(menynummer){
 			OLED_pos(3, 1);
 			OLED_print("* Difficulty");
 			OLED_pos(5, 1);
-			OLED_print("  Options");
+			OLED_print("  Highscores");
 			OLED_pos(7, 1);
 			OLED_print("  Music");
 			_delay_ms(200);
@@ -62,14 +92,14 @@ switch(menynummer){
 				}
 			}
 			break;
-	case '3' : // Options
+	case '3' : // Highscores
 			OLED_clear();
 			OLED_pos(1, 1);
 			OLED_print("  Start game");
 			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
 			OLED_pos(5, 1);
-			OLED_print("* Options");
+			OLED_print("* Highscores");
 			OLED_pos(7, 1);
 			OLED_print("  Music");
 			_delay_ms(200);
@@ -82,6 +112,9 @@ switch(menynummer){
 				else if (joy_pos.direction=="UP"){
 					menynummer='2';
 				}
+				else if (joy_button(1) == 0){
+					menynummer='9';
+				}
 			}
 			break;
 	case '4' :			//music
@@ -91,7 +124,7 @@ switch(menynummer){
 			OLED_pos(3, 1);
 			OLED_print("  Difficulty");
 			OLED_pos(5, 1);
-			OLED_print("  Options");
+			OLED_print("  Highscores");
 			OLED_pos(7, 1);
 			OLED_print("* Music");
 			_delay_ms(200);
@@ -197,5 +230,25 @@ switch(menynummer){
 				}
 			}
 			break;	
+	case '9' : // Test
+			OLED_clear();
+			OLED_pos(8,1);
+			OLED_print("Press any key");
+			for (int x = 0; x < 18; x++){
+				OLED_print_startscr(x);
+				_delay_ms(50);
+			}
+			_delay_ms(200);
+			while(menynummer=='9'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='1';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='1';
+				}
+			}
+			break;
 		}
 	}
