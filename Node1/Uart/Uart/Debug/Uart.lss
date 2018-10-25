@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00001860  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000228  00000000  00000000  0000189c  2**0
+  5 .debug_aranges 00000230  00000000  00000000  0000189c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000022ce  00000000  00000000  00001ac4  2**0
+  6 .debug_info   0000236a  00000000  00000000  00001acc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000011bd  00000000  00000000  00003d92  2**0
+  7 .debug_abbrev 000011bd  00000000  00000000  00003e36  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000012e0  00000000  00000000  00004f4f  2**0
+  8 .debug_line   0000131b  00000000  00000000  00004ff3  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000004f4  00000000  00000000  00006230  2**2
+  9 .debug_frame  00000518  00000000  00000000  00006310  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000007bc  00000000  00000000  00006724  2**0
+ 10 .debug_str    000007cf  00000000  00000000  00006828  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000ef9  00000000  00000000  00006ee0  2**0
+ 11 .debug_loc    00000fb8  00000000  00000000  00006ff7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000198  00000000  00000000  00007dd9  2**0
+ 12 .debug_ranges 000001a0  00000000  00000000  00007faf  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1686,9 +1686,9 @@ int main(void)
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-     9d6:	98 e7       	ldi	r25, 0x78	; 120
-     9d8:	2f eb       	ldi	r18, 0xBF	; 191
-     9da:	83 e0       	ldi	r24, 0x03	; 3
+     9d6:	93 ee       	ldi	r25, 0xE3	; 227
+     9d8:	2d ef       	ldi	r18, 0xFD	; 253
+     9da:	8e e0       	ldi	r24, 0x0E	; 14
      9dc:	91 50       	subi	r25, 0x01	; 1
      9de:	20 40       	sbci	r18, 0x00	; 0
      9e0:	80 40       	sbci	r24, 0x00	; 0
@@ -1838,10 +1838,10 @@ void MCP_bit_modify( uint8_t address, uint8_t mask, uint8_t data )
      af8:	08 95       	ret
 
 00000afa <OLED_home>:
-	//Clear the display
-	OLED_clear();
-	OLED_home();
-
+			*OLED_data = pgm_read_byte(&ntnu[y+1][i]);
+		}
+	}
+	
 	return 0;
 }
      afa:	10 92 7a 02 	sts	0x027A, r1	; 0x80027a <page>
@@ -1956,12 +1956,6 @@ void MCP_bit_modify( uint8_t address, uint8_t mask, uint8_t data )
      c0e:	08 95       	ret
 
 00000c10 <OLED_print_char>:
-	}
-	
-	return 0;
-}
-
-int OLED_print_char(char c) {
      c10:	90 e0       	ldi	r25, 0x00	; 0
      c12:	fc 01       	movw	r30, r24
      c14:	ee 0f       	add	r30, r30
@@ -1980,33 +1974,20 @@ int OLED_print_char(char c) {
      c2e:	99 1f       	adc	r25, r25
      c30:	88 58       	subi	r24, 0x88	; 136
      c32:	90 40       	sbci	r25, 0x00	; 0
-	//Write the complete character
-	for (int i = 0; i < FONTWIDTH; i++) {
-		*OLED_data = pgm_read_byte(&font[c-' '][i]);
      c34:	a0 91 06 01 	lds	r26, 0x0106	; 0x800106 <OLED_data>
      c38:	b0 91 07 01 	lds	r27, 0x0107	; 0x800107 <OLED_data+0x1>
      c3c:	24 91       	lpm	r18, Z
      c3e:	2c 93       	st	X, r18
      c40:	31 96       	adiw	r30, 0x01	; 1
-	return 0;
-}
-
-int OLED_print_char(char c) {
-	//Write the complete character
-	for (int i = 0; i < FONTWIDTH; i++) {
      c42:	e8 17       	cp	r30, r24
      c44:	f9 07       	cpc	r31, r25
      c46:	b1 f7       	brne	.-20     	; 0xc34 <OLED_print_char+0x24>
-		*OLED_data = pgm_read_byte(&font[c-' '][i]);
-	}
-	
-	return 0;
-}
      c48:	80 e0       	ldi	r24, 0x00	; 0
      c4a:	90 e0       	ldi	r25, 0x00	; 0
      c4c:	08 95       	ret
 
 00000c4e <OLED_print>:
+
 
 int OLED_print(char *data) {
      c4e:	cf 93       	push	r28

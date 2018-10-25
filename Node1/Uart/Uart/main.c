@@ -129,7 +129,7 @@ int main(void)
 // 	printf("TXb0CTRL: %02x\n\r",MCP_read(MCP_TXB0CTRL));
  	printf("y1 er %02x \n\r",x);
 	printf("y2 er %02x \n\r",y);
-	_delay_ms(250);
+	_delay_ms(1000);
 
 
 
