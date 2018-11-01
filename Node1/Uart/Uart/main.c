@@ -118,21 +118,21 @@ int main(void)
 	printf("y: %d ,",joy_pos.y);
 	printf("Retning: %s\n\r",joy_pos.direction);
 	
-	//can_msg_send.data[0] = joy_pos.x;
-	//can_msg_send.data[1] = joy_pos.y;
+	can_msg_send.data[0] = joy_pos.x;
+	can_msg_send.data[1] = joy_pos.y;
 	
- 			can_msg_send.data[0] = 0x10;
- 			i=i+1;
- 			if (i>0xFF)
- 			{
- 				i=0;
- 			}
- 			can_msg_send.data[1] = i;
-	
-	CAN_message_send(&can_msg_send);
+//  			can_msg_send.data[0] = 0x10;
+//  			i=i+1;
+//  			if (i>0xFF)
+//  			{
+//  				i=0;
+//  			}
+//  			can_msg_send.data[1] = i;
+// 	
+ 	CAN_message_send(&can_msg_send);
 	can_msg_receive = CAN_data_receive();
-	x=can_msg_receive.data[0];
-	y=can_msg_receive.data[1];
+ 	x=can_msg_receive.data[0];
+ 	y=can_msg_receive.data[1];
  	printf("y1 er %02x \n\r",x);
 	printf("y2 er %02x \n\r",y);
 	_delay_ms(250);

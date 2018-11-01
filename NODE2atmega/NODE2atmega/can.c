@@ -31,6 +31,9 @@ int CAN_init(void) {
 	
 	//Enable normal mode
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANSTAT));
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANINTF));
+	printf("can error i %02x mode\n\r", MCP_read(MCP_EFLG));
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){

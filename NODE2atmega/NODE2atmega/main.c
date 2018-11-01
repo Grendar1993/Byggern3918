@@ -16,7 +16,7 @@
 	#include "spi.h"
 	#include "can.h"
 	
-	uint8_t x, y;
+	int8_t x, y;
 	uint8_t i=0;
 	
 
@@ -43,7 +43,7 @@
 
 		if (CAN_init() == 0) {
 			printf("CAN BE WORKING\n\r");
-			can_msg_send.id = 1;
+			can_msg_send.id = 2;
 			can_msg_send.length = 8;
 			} else {
 			printf("CAN NOT BE WORKING \n\r");
@@ -72,8 +72,8 @@
 			can_msg_receive = CAN_data_receive();
 			x=can_msg_receive.data[0];
 			y=can_msg_receive.data[1];
-			printf("y1 er %02x \n\r",x);
-			printf("y2 er %02x \n\r",y);
+			printf("y1 er %d \n\r",x);
+			printf("y2 er %d \n\r",y);
 			_delay_ms(550);			
 		    }
 
