@@ -93,10 +93,10 @@ switch(menynummer){
 					menynummer='5';
 				}
 				else if (joy_button(1) == 0 && vanskelighetsgrad == 2){
-					menynummer='9'
+					menynummer='9';
 				}
 				else if (joy_button(1) == 0 && vanskelighetsgrad == 3){
-					menynummer='13'
+					menynummer='13';
 				} 
 			}
 			break;
@@ -214,10 +214,10 @@ switch(menynummer){
 				}
 				else if (joy_pos.direction=="UP"){
 					menynummer='6';
+				}
 				else if (joy_button(1) == 0){
 					vanskelighetsgrad = 3;
 					menynummer = '15';
-				}
 				}
 			}
 			break;	
@@ -443,6 +443,6 @@ switch(menynummer){
 					menynummer='1';
 				}
 			}
-		break;
+			break;
 		}
 	}
