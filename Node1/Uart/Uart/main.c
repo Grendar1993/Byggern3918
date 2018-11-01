@@ -114,8 +114,8 @@ int main(void)
 	//init_menu();
 	printf("Hoyre knapp: %d, ", joy_button(0));
 	printf("Venstre knapp: %d, ", joy_button(1));
-	printf("x: %d ,",ADC_read(1));
-	printf("y: %d ,",ADC_read(0));
+	printf("x: %d ,",joy_pos.x);
+	printf("y: %d ,",joy_pos.y);
 	printf("Retning: %s\n\r",joy_pos.direction);
 	
 	//can_msg_send.data[0] = joy_pos.x;
@@ -130,11 +130,11 @@ int main(void)
  			can_msg_send.data[1] = i;
 	
 	CAN_message_send(&can_msg_send);
-// 	can_msg_receive = CAN_data_receive();
-// 	x=can_msg_receive.data[0];
-// 	y=can_msg_receive.data[1];
-//  	printf("y1 er %02x \n\r",x);
-// 	printf("y2 er %02x \n\r",y);
+	can_msg_receive = CAN_data_receive();
+	x=can_msg_receive.data[0];
+	y=can_msg_receive.data[1];
+ 	printf("y1 er %02x \n\r",x);
+	printf("y2 er %02x \n\r",y);
 	_delay_ms(250);
 
 
