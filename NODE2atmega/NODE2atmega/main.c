@@ -16,7 +16,7 @@
 	#include "spi.h"
 	#include "can.h"
 	
-	uint8_t x, y;
+	int8_t x, y;
 	uint8_t i=0;
 	
 
@@ -32,14 +32,14 @@
 		
 		DDRD &= ~(1 << PIND2);		//Set D2(INT2) as input
 		
-		int variabel = 1;
+		//int variabel = 1;
 		
 		can_msg can_msg_send;
-		can_msg can_msg_receive;
+		volatile can_msg can_msg_receive;
 		
 		UART_Init(UBRREG);
-// 		SPI_init();
-// 		MCP_init();
+ 		SPI_init();
+ 		MCP_init();
 
 		if (CAN_init() == 0) {
 			printf("CAN BE WORKING\n\r");
@@ -54,26 +54,27 @@
 	while(1){
 
 			printf("loopyloop \n\r");
-// 			can_msg_send.data[0] = 0x10;
-// 			i=i+1;
-// 			if (i>0xFF)
-// 			{
-// 				i=0;
-// 			}
-// 			can_msg_send.data[1] = i;
-// 			
-// 			CAN_message_send(&can_msg_send);
+ 			can_msg_send.data[0] = 0x10;
+			i=i+1;
+			if (i>0xFF)
+			{
+				i=0;
+			}
+			can_msg_send.data[1] = i;
+			
+			CAN_message_send(&can_msg_send);
+			_delay_ms(100);
 			can_msg_receive = CAN_data_receive();
 			x=can_msg_receive.data[0];
 			y=can_msg_receive.data[1];
 	
-// 			
-// 			can_msg_receive = CAN_data_receive();
-// 			x=can_msg_receive.data[0];
-// 			y=can_msg_receive.data[1];
-			printf("y1 er %02x \n\r",x);
-			printf("y2 er %02x \n\r",y);
-			_delay_ms(250);			
+			
+			can_msg_receive = CAN_data_receive();
+			x=can_msg_receive.data[0];
+			y=can_msg_receive.data[1];
+			printf("y1 er %d \n\r",x);
+			printf("y2 er %d \n\r",y);
+			_delay_ms(550);			
 		    }
 
 }

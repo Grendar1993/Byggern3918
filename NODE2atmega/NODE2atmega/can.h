@@ -17,7 +17,6 @@ typedef struct can_msg{
 	uint8_t data[8];
 }can_msg;
 
-uint8_t rx_flag;
 enum interrupt_flags {no_flag, RX0, RX1};
 
 int CAN_init(void);

@@ -18,7 +18,7 @@ enum interrupt_flags interrupt_flag = no_flag;
 
 
 
-uint8_t rx_flag = 0;
+volatile uint8_t rx_flag = 0;
 
 int CAN_init(void) {
 	//Enter config mode
@@ -31,6 +31,9 @@ int CAN_init(void) {
 	
 	//Enable normal mode
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANSTAT));
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANINTF));
+	printf("can error i %02x mode\n\r", MCP_read(MCP_EFLG));
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
@@ -108,12 +111,13 @@ int CAN_transmit_complete(void) {
 
 can_msg CAN_data_receive(void) {
 	printf("asdfassdf\n\r");
-	uint8_t i;
-	can_msg message = {0};
+	uint8_t i=0;
+	can_msg message;
 	
 	//Check if RX buffer has a message
-	if (rx_flag == 1) {
-		
+	printf("RX: %d\n\r", rx_flag);
+	if (rx_flag == 1 ) {
+		printf("LESER\n\r");
 		//Get message id
 		message.id  = (MCP_read(MCP_RXB0SIDH) << 3) | (MCP_read(MCP_RXB0SIDL) >> 5);
 		
@@ -126,6 +130,7 @@ can_msg CAN_data_receive(void) {
 		for(i = 0; i < message.length; i++) {
 			message.data[i] = MCP_read(MCP_RXB0D0 + i);
 		}
+
 		
 		//Clear interrupt flag
 		rx_flag = 0;
@@ -142,7 +147,7 @@ can_msg CAN_data_receive(void) {
 ISR(INT2_vect) {
 //	_delay_ms(10);
 	CAN_int_vect();
-// printf("ghjkhk\r\n");
+   printf("INTERRUPT\r\n");
 // 	uint8_t interrupt = MCP_read(MCP_CANINTF);
 // 
 // 	if (interrupt & MCP_RX0IF){
