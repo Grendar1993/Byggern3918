@@ -83,20 +83,25 @@ joy_position JOY_getDirection(void) {
 	
 	if(position.x < -45) {
 		position.direction = "LEFT";
+		position.numdirection = 2;
 		} 
 	else if(position.x > 45) {
 		position.direction = "RIGHT";
+		position.numdirection = 1;
 	}
 	
 	if(position.y < -45) {
 		position.direction = "DOWN";
+		position.numdirection = 4;
 		} 
 	else if(position.y > 45) {
 		position.direction = "UP";
+		position.numdirection = 3;
 	}
 	
 	if((position.x >= -44 && position.x <= 44) && (position.y >= -44 && position.y <= 44)){
 		position.direction = "NEUTRAL";
+		position.numdirection = 0;
 	}
 	
 	return position;
