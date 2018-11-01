@@ -7,7 +7,9 @@
 #include "menu.h"
 #include "Joystick.h"
 
-char menynummer='0';	// Ved oppstart faar vi startskjerm
+int menynummer = 0;	// Ved oppstart faar vi startskjerm
+int vanskelighetsgrad = 0;
+
 int init_menu(void) {
 	joy_position joy_pos;
 	joy_init();
@@ -87,9 +89,15 @@ switch(menynummer){
 				else if (joy_pos.direction == "UP"){
 					menynummer='1' ;
 				}
-				else if (joy_button(1) == 0){
+				else if (joy_button(1) == 0 && vanskelighetsgrad == 1){
 					menynummer='5';
 				}
+				else if (joy_button(1) == 0 && vanskelighetsgrad == 2){
+					menynummer='9'
+				}
+				else if (joy_button(1) == 0 && vanskelighetsgrad == 3){
+					menynummer='13'
+				} 
 			}
 			break;
 	case '3' : // Highscores
@@ -139,10 +147,10 @@ switch(menynummer){
 				}
 			}
 			break;
-	case '5' : // Submeny difficulty easy
+	case '5' : // Submeny EASY-EASY
 			OLED_clear();
 			OLED_pos(1, 1);
-			OLED_print("* Easy");
+			OLED_print("* >Easy<");
 			OLED_pos(3, 1);
 			OLED_print("  Medium");
 			OLED_pos(5, 1);
@@ -161,10 +169,10 @@ switch(menynummer){
 				}
 			}
 			break;	
-	case '6' : // Submeny difficulty medium
+	case '6' : // Submeny EASY-MEDIUM
 			OLED_clear();
 			OLED_pos(1, 1);
-			OLED_print("  Easy");
+			OLED_print("  >Easy<");
 			OLED_pos(3, 1);
 			OLED_print("* Medium");
 			OLED_pos(5, 1);
@@ -181,12 +189,16 @@ switch(menynummer){
 				else if (joy_pos.direction=="UP"){
 					menynummer='5';
 				}
+				else if (joy_button(1) == 0){
+					vanskelighetsgrad = 2;
+					menynummer = '10';
+				}
 			}
 			break;	
-	case '7' : // Submeny difficulty hard
+	case '7' : // Submeny EASY-HARD
 			OLED_clear();
 			OLED_pos(1, 1);
-			OLED_print("  Easy");
+			OLED_print("  >Easy<");
 			OLED_pos(3, 1);
 			OLED_print("  Medium");
 			OLED_pos(5, 1);
@@ -202,13 +214,17 @@ switch(menynummer){
 				}
 				else if (joy_pos.direction=="UP"){
 					menynummer='6';
+				else if (joy_button(1) == 0){
+					vanskelighetsgrad = 3;
+					menynummer = '15';
+				}
 				}
 			}
 			break;	
-	case '8' : // Submeny difficulty return
+	case '8' : // Submeny EASY-RETURN
 			OLED_clear();
 			OLED_pos(1, 1);
-			OLED_print("  Easy");
+			OLED_print("  >Easy<");
 			OLED_pos(3, 1);
 			OLED_print("  Medium");
 			OLED_pos(5, 1);
@@ -230,25 +246,203 @@ switch(menynummer){
 				}
 			}
 			break;	
-	case '9' : // Test
+	case '9' : // Submeny MEDIUM-EASY
 			OLED_clear();
-			OLED_pos(8,1);
-			OLED_print("Press any key");
-			for (int x = 0; x < 18; x++){
-				OLED_print_startscr(x);
-				_delay_ms(50);
-			}
+			OLED_pos(1, 1);
+			OLED_print("* Easy");
+			OLED_pos(3, 1);
+			OLED_print(" >Medium<");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
 			_delay_ms(200);
 			while(menynummer=='9'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='10';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='12';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='5';
+					vanskelighetsgrad = 1;
+				}
+			}
+			break;	
+	case '10' : // Submeny MEDIUM-MEDIUM
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  >Easy<");
+			OLED_pos(3, 1);
+			OLED_print("*>Medium<");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='10'){
 				joy_pos = JOY_getDirection();
 				_delay_ms(50);
 				if (joy_pos.direction=="DOWN"){
-					menynummer='1';
+					menynummer='11';
 				}
 				else if (joy_pos.direction=="UP"){
+					menynummer='9';
+				}
+			}
+			break;
+	case '11' : // Submeny MEDIUM-HARD
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("  >Medium<");
+			OLED_pos(5, 1);
+			OLED_print("* Hard");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='11'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='12';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='10';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='15';
+					vanskelighetsgrad=3;
+				}
+			}
+			break;
+	case '12' : // Submeny MEDIUM-RETURN
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print(" >Medium<");
+			OLED_pos(5, 1);
+			OLED_print("  Hard");
+			OLED_pos(7, 1);
+			OLED_print("* Back");
+			_delay_ms(200);
+			while(menynummer=='12'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='9';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='11';
+				}
+				else if (joy_button(1) == 0){
 					menynummer='1';
 				}
 			}
 			break;
+	case '13' : // Submeny HARD-EASY
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("* Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print(" >Hard<");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='13'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='14';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='16';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='5';
+					vanskelighetsgrad=1;
+				}
+			}
+			break;
+	case '14' : // Submeny HARD-MEDIUM
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("* Medium");
+			OLED_pos(5, 1);
+			OLED_print("  >hard<");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='14'){
+			joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='16';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='13';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='10';
+					vanskelighetsgrad=2;
+				}
+			}
+			break;			
+	case '15' : // Submeny HARD-HARD
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print("* >Hard<");
+			OLED_pos(7, 1);
+			OLED_print("  Back");
+			_delay_ms(200);
+			while(menynummer=='15'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='16';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='14';
+				}
+			}
+			break;
+	case '16' : // Submeny HARD-RETURN
+			OLED_clear();
+			OLED_pos(1, 1);
+			OLED_print("  Easy");
+			OLED_pos(3, 1);
+			OLED_print("  Medium");
+			OLED_pos(5, 1);
+			OLED_print(" >Hard<");
+			OLED_pos(7, 1);
+			OLED_print("* Back");
+			_delay_ms(200);
+			while(menynummer=='16'){
+				joy_pos = JOY_getDirection();
+				_delay_ms(50);
+				if (joy_pos.direction=="DOWN"){
+					menynummer='13';
+				}
+				else if (joy_pos.direction=="UP"){
+					menynummer='15';
+				}
+				else if (joy_button(1) == 0){
+					menynummer='1';
+				}
+			}
+		break;
 		}
 	}
