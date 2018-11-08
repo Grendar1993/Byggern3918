@@ -37,10 +37,13 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../adc.c \
 ../can.c \
+../IR.c \
 ../main.c \
 ../MCP2515.c \
 ../spi.c \
+../TIMER.c \
 ../UART.c
 
 
@@ -51,31 +54,43 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+adc.o \
 can.o \
+IR.o \
 main.o \
 MCP2515.o \
 spi.o \
+TIMER.o \
 UART.o
 
 OBJS_AS_ARGS +=  \
+adc.o \
 can.o \
+IR.o \
 main.o \
 MCP2515.o \
 spi.o \
+TIMER.o \
 UART.o
 
 C_DEPS +=  \
+adc.d \
 can.d \
+IR.d \
 main.d \
 MCP2515.d \
 spi.d \
+TIMER.d \
 UART.d
 
 C_DEPS_AS_ARGS +=  \
+adc.d \
 can.d \
+IR.d \
 main.d \
 MCP2515.d \
 spi.d \
+TIMER.d \
 UART.d
 
 OUTPUT_FILE_PATH +=NODE2atmega.elf
@@ -92,6 +107,12 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
+
+
 
 
 

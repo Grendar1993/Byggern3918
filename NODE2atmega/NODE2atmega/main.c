@@ -16,16 +16,20 @@
 	#include "spi.h"
 	#include "can.h"
 	#include "TIMER.h"
+	#include "adc.h"
+	#include "IR.h"
 	
 	int8_t x, y;
 	uint8_t i=0;
+	int ir_val;
+	int prev_ir_val = 0;
 	
 
     int main(void){
 		
 		cli();
 		
-		
+		DDRF &= ~(1 << PINF0); //Set F0(ADC0) as input
 		
 		EICRA |= (0 << ISC21) | (0 << ISC20);
 		// Enable external interrupts of INT2
@@ -49,33 +53,50 @@
 			} else {
 			printf("CAN NOT BE WORKING \n\r");
 		}
+		
+		ADC_init();
 
 		sei();
 
 	while(1){
-
-			printf("loopyloop \n\r");
- 			can_msg_send.data[0] = 0x10;
-			i=i+1;
-			if (i>0xFF)
-			{
-				i=0;
+			
+		ir_val = IR_read();
+		printf("ting er av verdi %d\n\r",ir_val);
+		if (ir_val - prev_ir_val != 0){
+			if (ir_val == 0){
+				printf("Lives have been reduced\n\r");
 			}
-			can_msg_send.data[1] = i;
-			
-			CAN_message_send(&can_msg_send);
-			_delay_ms(100);
-			can_msg_receive = CAN_data_receive();
-			x=can_msg_receive.data[0];
-			y=can_msg_receive.data[1];
-	
-			
-			can_msg_receive = CAN_data_receive();
-			x=can_msg_receive.data[0];
-			y=can_msg_receive.data[1];
-			printf("y1 er %d \n\r",x);
-			printf("y2 er %d \n\r",y);
-			_delay_ms(550);			
+			prev_ir_val = ir_val;
+			printf("lives have not been reduced\n\r");
+		}
+
 		    }
 
 }
+
+
+
+
+
+// 			printf("loopyloop \n\r");
+//  			can_msg_send.data[0] = 0x10;
+// 			i=i+1;
+// 			if (i>0xFF)
+// 			{
+// 				i=0;
+// 			}
+// 			can_msg_send.data[1] = i;
+//
+// 			CAN_message_send(&can_msg_send);
+// 			_delay_ms(100);
+// 			can_msg_receive = CAN_data_receive();
+// 			x=can_msg_receive.data[0];
+// 			y=can_msg_receive.data[1];
+//
+//
+// 			can_msg_receive = CAN_data_receive();
+// 			x=can_msg_receive.data[0];
+// 			y=can_msg_receive.data[1];
+// 			printf("y1 er %d \n\r",x);
+// 			printf("y2 er %d \n\r",y);
+// 			_delay_ms(550);

@@ -133,9 +133,8 @@ int main(void)
 	can_msg_receive = CAN_data_receive();
  	x=can_msg_receive.data[0];
  	y=can_msg_receive.data[1];
- 	printf("y1 er %02x \n\r",x);
-	printf("y2 er %02x \n\r",y);
-	_delay_ms(250);
+ 	printf("y1 er %d \n\r",x);
+	printf("y2 er %d \n\r",y);
 
 
 
