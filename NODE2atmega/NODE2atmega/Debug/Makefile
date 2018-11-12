@@ -43,6 +43,7 @@ C_SRCS +=  \
 ../IR.c \
 ../main.c \
 ../MCP2515.c \
+../Motor_controller.c \
 ../MOTOR_driver.c \
 ../spi.c \
 ../TIMER.c \
@@ -63,6 +64,7 @@ DAC_driver.o \
 IR.o \
 main.o \
 MCP2515.o \
+Motor_controller.o \
 MOTOR_driver.o \
 spi.o \
 TIMER.o \
@@ -76,6 +78,7 @@ DAC_driver.o \
 IR.o \
 main.o \
 MCP2515.o \
+Motor_controller.o \
 MOTOR_driver.o \
 spi.o \
 TIMER.o \
@@ -89,6 +92,7 @@ DAC_driver.d \
 IR.d \
 main.d \
 MCP2515.d \
+Motor_controller.d \
 MOTOR_driver.d \
 spi.d \
 TIMER.d \
@@ -102,6 +106,7 @@ DAC_driver.d \
 IR.d \
 main.d \
 MCP2515.d \
+Motor_controller.d \
 MOTOR_driver.d \
 spi.d \
 TIMER.d \
@@ -158,6 +163,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./MCP2515.o: .././MCP2515.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./Motor_controller.o: .././Motor_controller.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -14,6 +14,8 @@ main.c
 
 MCP2515.c
 
+Motor_controller.c
+
 MOTOR_driver.c
 
 spi.c

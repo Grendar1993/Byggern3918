@@ -59,22 +59,20 @@
 		
 		DAC_init();
 		motor_init();
-		
-		printf("Kommer den hit?\n\r");
 
 	while(1){
-			DAC_send(255);
-		ir_val = IR_read();
-		//printf("ting er av verdi %d\n\r",ir_val);
-		if (ir_val - prev_ir_val != 0){
-			if (ir_val == 0){
-				printf("Lives have been reduced\n\r");
-			}
-			prev_ir_val = ir_val;
-			printf("lives have not been reduced\n\r");
-		}
 
-		    }
+// 		ir_val = IR_read();
+// 		//printf("ting er av verdi %d\n\r",ir_val);
+// 		if (ir_val - prev_ir_val != 0){
+// 			if (ir_val == 0){
+// 				printf("Lives have been reduced\n\r");
+// 			}
+// 			prev_ir_val = ir_val;
+// 			printf("lives have not been reduced\n\r");
+// 		}
+// 
+ 		    }
 
 }
 
