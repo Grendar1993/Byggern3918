@@ -35,7 +35,7 @@ void motor_init(){
 	// Reset encoder
 	motor_reset_encoder();
 	
-	// Set data bits to input:
+	// Set data bits to input: ??Ikke helt sikker på hva disse skal brukes til, encodern gir ut verdier igjennom MJ2
 	clear_bit(DDRK, PK0);
 	clear_bit(DDRK, PK1);
 	clear_bit(DDRK, PK2);
@@ -113,6 +113,8 @@ void motor_calibrate() {
 	motor_set_direction(LEFT);
 	motor_set_speed(100);
 	int16_t cur_rot = motor_read_rotation(0);
+	
+	// tester encodern for å se om den fungerer som angitt
 	int16_t prev_rot = cur_rot+200;
 	while(prev_rot != cur_rot) {
 		prev_rot = cur_rot;

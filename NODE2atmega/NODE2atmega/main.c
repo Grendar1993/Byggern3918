@@ -55,17 +55,17 @@
 			} else {
 			printf("CAN NOT BE WORKING \n\r");
 		}
+		printf("Kommer den hit? \n\r");
 		
 		DAC_init();
 		motor_init();
 		
-
-		sei();
+		printf("Kommer den hit?\n\r");
 
 	while(1){
-			
+			DAC_send(255);
 		ir_val = IR_read();
-		printf("ting er av verdi %d\n\r",ir_val);
+		//printf("ting er av verdi %d\n\r",ir_val);
 		if (ir_val - prev_ir_val != 0){
 			if (ir_val == 0){
 				printf("Lives have been reduced\n\r");

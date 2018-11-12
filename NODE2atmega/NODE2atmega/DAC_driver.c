@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <avr/interrupt.h>
 #include "TWI_MASTER.h"
+#include "UART.h"
 
 void DAC_init() {
 	sei();
