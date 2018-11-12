@@ -36,15 +36,15 @@ void motor_init(){
 	motor_reset_encoder();
 	
 	// Set data bits to input: ??Ikke helt sikker på hva disse skal brukes til, encodern gir ut verdier igjennom MJ2
-	clear_bit(DDRK, PK0);
-	clear_bit(DDRK, PK1);
-	clear_bit(DDRK, PK2);
-	clear_bit(DDRK, PK3);
-	clear_bit(DDRK, PK4);
-	clear_bit(DDRK, PK5);
-	clear_bit(DDRK, PK6);
-	clear_bit(DDRK, PK7);
-	
+// 	clear_bit(DDRK, PK0);
+// 	clear_bit(DDRK, PK1);
+// 	clear_bit(DDRK, PK2);
+// 	clear_bit(DDRK, PK3);
+// 	clear_bit(DDRK, PK4);
+// 	clear_bit(DDRK, PK5);
+// 	clear_bit(DDRK, PK6);
+// 	clear_bit(DDRK, PK7);
+// 	
 	motor_calibrate();
 }
 
@@ -118,7 +118,7 @@ void motor_calibrate() {
 	int16_t prev_rot = cur_rot+200;
 	while(prev_rot != cur_rot) {
 		prev_rot = cur_rot;
-		_delay_ms(40);
+		_delay_ms(100);
 		cur_rot = motor_read_rotation(0);
 	}
 	motor_reset_encoder();

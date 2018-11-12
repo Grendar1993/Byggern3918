@@ -8,8 +8,8 @@
 
 #ifndef MOTOR_CONTROLLER_H_
 #define MOTOR_CONTROLLER_H_
-
-
+void PI_init(void);
+void PID_alg(int16_t);
 
 
 
