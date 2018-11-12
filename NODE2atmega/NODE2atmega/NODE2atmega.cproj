@@ -184,6 +184,12 @@
     <Compile Include="can.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="DAC_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="DAC_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="IR.c">
       <SubType>compile</SubType>
     </Compile>
@@ -199,6 +205,12 @@
     <Compile Include="MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MOTOR_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MOTOR_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="setup.h">
       <SubType>compile</SubType>
     </Compile>
@@ -212,6 +224,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TIMER.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TWI_MASTER.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TWI_MASTER.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="UART.c">

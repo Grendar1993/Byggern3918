@@ -39,11 +39,14 @@ SUBDIRS :=
 C_SRCS +=  \
 ../adc.c \
 ../can.c \
+../DAC_driver.c \
 ../IR.c \
 ../main.c \
 ../MCP2515.c \
+../MOTOR_driver.c \
 ../spi.c \
 ../TIMER.c \
+../TWI_MASTER.c \
 ../UART.c
 
 
@@ -56,41 +59,53 @@ ASM_SRCS +=
 OBJS +=  \
 adc.o \
 can.o \
+DAC_driver.o \
 IR.o \
 main.o \
 MCP2515.o \
+MOTOR_driver.o \
 spi.o \
 TIMER.o \
+TWI_MASTER.o \
 UART.o
 
 OBJS_AS_ARGS +=  \
 adc.o \
 can.o \
+DAC_driver.o \
 IR.o \
 main.o \
 MCP2515.o \
+MOTOR_driver.o \
 spi.o \
 TIMER.o \
+TWI_MASTER.o \
 UART.o
 
 C_DEPS +=  \
 adc.d \
 can.d \
+DAC_driver.d \
 IR.d \
 main.d \
 MCP2515.d \
+MOTOR_driver.d \
 spi.d \
 TIMER.d \
+TWI_MASTER.d \
 UART.d
 
 C_DEPS_AS_ARGS +=  \
 adc.d \
 can.d \
+DAC_driver.d \
 IR.d \
 main.d \
 MCP2515.d \
+MOTOR_driver.d \
 spi.d \
 TIMER.d \
+TWI_MASTER.d \
 UART.d
 
 OUTPUT_FILE_PATH +=NODE2atmega.elf
@@ -121,6 +136,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./DAC_driver.o: .././DAC_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./IR.o: .././IR.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -142,6 +164,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./MOTOR_driver.o: .././MOTOR_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./spi.o: .././spi.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -150,6 +179,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./TIMER.o: .././TIMER.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./TWI_MASTER.o: .././TWI_MASTER.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2560 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

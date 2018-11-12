@@ -18,6 +18,8 @@
 	#include "TIMER.h"
 	#include "adc.h"
 	#include "IR.h"
+	#include "MOTOR_driver.h"
+	#include "DAC_driver.h"
 	
 	int8_t x, y;
 	uint8_t i=0;
@@ -54,7 +56,9 @@
 			printf("CAN NOT BE WORKING \n\r");
 		}
 		
-		ADC_init();
+		DAC_init();
+		motor_init();
+		
 
 		sei();
 
