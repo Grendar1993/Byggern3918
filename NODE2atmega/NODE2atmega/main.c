@@ -65,16 +65,19 @@
 		motor_init();
 		_delay_ms(150);
 		motor_read_rotation(1);
-		//PID_init();
+		PID_init();
+		sei();
 
 	while(1){
-	//PID_alg(2000);
-	can_msg_receive = CAN_data_receive();
-	slider_left = can_msg_receive.data[2];
-	x=can_msg_receive.data[0];
-	y=can_msg_receive.data[1];
-	printf("loopyloop %d \n\r",slider_left);
-	_delay_ms(500);
+		update_ref(127);
+		
+		
+ 	can_msg_receive = CAN_data_receive();
+ 	slider_left = can_msg_receive.data[1];
+ 	x=can_msg_receive.data[0];
+ //	y=can_msg_receive.data[1];
+ 	printf("loopyloop %d \n\r",slider_left);
+ 	_delay_ms(500);
 	
 	
 

@@ -108,7 +108,7 @@ int CAN_transmit_complete(void) {
 
 
 can_msg CAN_data_receive(void) {
-	printf("asdfassdf\n\r");
+	//printf("asdfassdf\n\r");
 	uint8_t i;
 	can_msg message = {0};
 	
