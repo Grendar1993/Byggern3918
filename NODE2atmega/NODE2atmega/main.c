@@ -69,8 +69,9 @@
 			prev_ir_val = ir_val;
 			printf("lives have not been reduced\n\r");
 		}
-
+		_delay_ms(500);
 		    }
+			
 
 }
 
