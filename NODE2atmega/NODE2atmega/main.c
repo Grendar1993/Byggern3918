@@ -18,12 +18,16 @@
 	#include "TIMER.h"
 	#include "adc.h"
 	#include "IR.h"
+	#include "MOTOR_driver.h"
+	#include "DAC_driver.h"
+	#include "Motor_controller.h"
 	
 	int8_t x, y;
 	uint8_t i=0;
 	int ir_val;
 	int prev_ir_val = 0;
-	
+	uint8_t slider_left;
+	int16_t ref = 1000;
 
     int main(void){
 		
@@ -34,6 +38,8 @@
 		EICRA |= (0 << ISC21) | (0 << ISC20);
 		// Enable external interrupts of INT2
 		EIMSK |= (1 << INT2);
+		
+		TIMSK1|= (1 << TOIE1);
 		
 		DDRD &= ~(1 << PIND2);		//Set D2(INT2) as input
 		
@@ -53,12 +59,17 @@
 			} else {
 			printf("CAN NOT BE WORKING \n\r");
 		}
+		printf("Kommer den hit? \n\r");
 		
-		ADC_init();
-
+		DAC_init();
+		motor_init();
+		_delay_ms(150);
+		motor_read_rotation(1);
+		PID_init();
 		sei();
 
 	while(1){
+<<<<<<< HEAD
 			
 		ir_val = IR_read();
 		printf("ting er av verdi %d\n\r",ir_val);
@@ -72,6 +83,31 @@
 		_delay_ms(500);
 		    }
 			
+=======
+		update_ref(127);
+		
+		
+ 	can_msg_receive = CAN_data_receive();
+ 	slider_left = can_msg_receive.data[1];
+ 	x=can_msg_receive.data[0];
+ //	y=can_msg_receive.data[1];
+ 	printf("loopyloop %d \n\r",slider_left);
+ 	_delay_ms(500);
+	
+	
+
+// 		ir_val = IR_read();
+// 		//printf("ting er av verdi %d\n\r",ir_val);
+// 		if (ir_val - prev_ir_val != 0){
+// 			if (ir_val == 0){
+// 				printf("Lives have been reduced\n\r");
+// 			}
+// 			prev_ir_val = ir_val;
+// 			printf("lives have not been reduced\n\r");
+// 		}
+// 
+ 		    }
+>>>>>>> 343998c6d105f4320b87ef8e886a5445cb60bd37
 
 }
 
