@@ -38,7 +38,7 @@ void PID_init(){
 		 // Disable global interrupts
 		 cli();
 		 
-		 // enable timer overflow interrupt for Timer2
+		 // enable timer overflow interrupt for Timer2 denne er 8 bit
 		 TIMSK2=(1<<TOIE2);
 		 
 		 // start timer2 with /1024 prescaler
@@ -56,17 +56,16 @@ int16_t update_ref(int16_t oppdatert_ref){
 }
 
 void PID_alg(int16_t ref){
-float kp=0.5;
+float kp=1;
 float Ti=1;
-float h=0.00016;
-float k= 255;
-float k_1 = 9200;
+float h=0.016;
+// float k= 255;
+// float k_1 = 9200;
 int32_t possisjon = (motor_read_rotation(0)*-1);
-possisjon = possisjon * k;
-possisjon = possisjon / k_1;
-double error = ref - possisjon;
+possisjon = possisjon * 0.027;
+int16_t error = ref - possisjon;
 prev_error = prev_error + error;
-int32_t padrag = kp*error + h*Ti*prev_error;
+int32_t padrag = kp*error + h*Ti*error;
 
 //hindrer at integratoren bygger seg for mye op
 if(possisjon==error){

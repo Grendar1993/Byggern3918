@@ -26,8 +26,9 @@
 	uint8_t i=0;
 	int ir_val;
 	int prev_ir_val = 0;
-	uint8_t slider_left;
-	int16_t ref = 1000;
+	double slider_left;
+	uint8_t ref_update;
+	double skaler = 2.55;
 
     int main(void){
 		
@@ -90,7 +91,6 @@
 		  //  }
 			
 //=======
-		update_ref(127);
 		_delay_ms(10);
 		printf("can receive \n\r");
  	can_msg_receive = CAN_data_receive();
@@ -99,6 +99,12 @@
  //	y=can_msg_receive.data[1];
  //	printf("loopyloop %d \n\r",slider_left);
  	_delay_ms(500);
+	 printf("slider_left: %d \n\r",ref_update);
+	 ref_update = slider_left * skaler;
+	 update_ref(150);
+	 _delay_ms(500);
+	 update_ref(50);
+	
 	
 	
 
