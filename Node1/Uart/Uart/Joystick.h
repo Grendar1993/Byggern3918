@@ -6,8 +6,8 @@ uint8_t mid_x, mid_y;
 typedef struct {
 	int8_t x;
 	int8_t y;
-	int8_t numdirection; // 0 = Neutral, 1 = Right, 2 = Left, 3 = Up, 4 = Down
-	char *direction;
+	int8_t sidedir; // 1 = Right, 2 = Left
+	int8_t dir;		// 1 = Up, 2 = Down
 } joy_position;
 
 typedef struct {

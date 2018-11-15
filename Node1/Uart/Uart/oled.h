@@ -14,6 +14,9 @@ int OLED_clear(void);
 int OLED_print_char(char c);
 int OLED_print(char *data);
 int OLED_draw_circle(uint8_t x, uint8_t y, uint8_t r);
+int OLED_print_startscr(int col);
+int OLED_print_animation(char c);
+int OLED_print_name(void);
 
 int OLED_sram_clear_line(uint8_t line);
 int OLED_sram_clear(void);
