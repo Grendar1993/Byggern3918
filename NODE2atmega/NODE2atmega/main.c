@@ -39,7 +39,7 @@
 		// Enable external interrupts of INT2
 		EIMSK |= (1 << INT2);
 		
-		TIMSK1|= (1 << TOIE1);
+		//TIMSK1|= (1 << TOIE1);
 		
 		DDRD &= ~(1 << PIND2);		//Set D2(INT2) as input
 		
@@ -51,6 +51,7 @@
 		UART_Init(UBRREG);
  		SPI_init();
  		MCP_init();
+		ADC_init();
 
 		if (CAN_init() == 0) {
 			printf("CAN BE WORKING\n\r");
@@ -66,32 +67,37 @@
 		_delay_ms(150);
 		motor_read_rotation(1);
 		PID_init();
+		printf("init done\n\r");
 		sei();
 
 	while(1){
-<<<<<<< HEAD
+//<<<<<<< HEAD
 			
 		ir_val = IR_read();
-		printf("ting er av verdi %d\n\r",ir_val);
+/*		printf("ting er av verdi %d\n\r",ir_val);*/
 		if (ir_val - prev_ir_val != 0){
-			if (ir_val == 0){
+			if (ir_val <= 3){
 				printf("Lives have been reduced\n\r");
+				while (ir_val<6)
+				{
+					_delay_ms(10);
+					ir_val= IR_read();
+				}
 			}
 			prev_ir_val = ir_val;
-			printf("lives have not been reduced\n\r");
 		}
-		_delay_ms(500);
-		    }
+		
+		  //  }
 			
-=======
+//=======
 		update_ref(127);
-		
-		
+		_delay_ms(10);
+		printf("can receive \n\r");
  	can_msg_receive = CAN_data_receive();
  	slider_left = can_msg_receive.data[1];
- 	x=can_msg_receive.data[0];
+ 	x=can_msg_receive.data[1];
  //	y=can_msg_receive.data[1];
- 	printf("loopyloop %d \n\r",slider_left);
+ //	printf("loopyloop %d \n\r",slider_left);
  	_delay_ms(500);
 	
 	
@@ -107,7 +113,7 @@
 // 		}
 // 
  		    }
->>>>>>> 343998c6d105f4320b87ef8e886a5445cb60bd37
+//>>>>>>> 343998c6d105f4320b87ef8e886a5445cb60bd37
 
 }
 

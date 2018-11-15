@@ -15,6 +15,7 @@
 #include "setup.h"
 #include "can.h"
 #include "MOTOR_driver.h"
+#include "Motor_controller.h"
 #include <math.h>
 #include <util/delay.h>
 

@@ -22,5 +22,6 @@ uint8_t IR_read( void )
 		}
 	}
 	avg = avg / 4;
+	printf("dfad %d \n\r",avg);
 	return avg;
 }
