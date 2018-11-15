@@ -36,7 +36,7 @@
   <documentation help="" />
   <offline-documentation help="" />
   <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.34.1" />
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.28.1" />
   </dependencies>
 </framework-data>
     </AsfFrameworkConfig>
@@ -148,13 +148,7 @@
     <Compile Include="can.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="figures.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="font_8x8.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="font_drawings.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Joystick.c">

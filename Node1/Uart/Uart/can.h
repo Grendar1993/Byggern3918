@@ -11,14 +11,14 @@
 
 #include <avr/io.h>
 
+//struct for can message, contains id, mesage length and data sendt in the message
+
 typedef struct can_msg{
 	unsigned int id;
 	uint8_t length;		// max 8
 	uint8_t data[8];
 }can_msg;
 
-uint8_t rx_flag;
-enum interrupt_flags {no_flag, RX0, RX1};
 
 int CAN_init(void);
 int CAN_message_send(can_msg* message);

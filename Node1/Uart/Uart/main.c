@@ -38,10 +38,6 @@ int main(void)
 	
 	cli();
 	
-	//DDRD |= (1 << PIND5);		//Set D5(OC1A) as output
-	
-	
-	
 	GICR  |= (1 << INT0);		//Enable INT0
 	MCUCR |= (0 << ISC01) | (0 << ISC00);	//On falling edge
 	

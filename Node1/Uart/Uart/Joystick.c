@@ -1,3 +1,9 @@
+/*
+This driver sets up functions that makes it easier to convert the values from the joystick and the slider to digital values that can be used by the micocontroller
+*/
+
+
+
 #include <avr/io.h>
 #include <stdio.h>
 #include "adc.h"
@@ -7,27 +13,28 @@
 uint8_t mid_x, mid_y;
 
 int joy_init(void){
-	// sette opp adc
+	// let the ADC set itself up
 	ADC_init();
 	
 	//Set Button pins to input
 	DDRB &= ~(1<<PINB0) & ~(1<<PINB1) & ~(1<<PINB2);
-	//sette opp pullupresistors
+	//set pull up resistors
 	PORTB |= (1<<PINB0) | (1<<PINB1) | (1<<PINB2); 
 	
-	//kalibrasjon init
+	//Let the joystick calibrate itself
 	JOY_calibrate();
 	
 	return 0;
 }
 
-
+//the calibrate function reads the initial values of the joystick and assumes these are the neutral positions.
 int JOY_calibrate(void) {
 	mid_x=ADC_read(0);
 	mid_y=ADC_read(1);
 	return 0;
 }
 
+// setting the inputs for the pins that the buttons are connected to
 int joy_button(int button){
 	switch (button) {
 		case 0: // joystick button
@@ -45,6 +52,7 @@ int joy_button(int button){
 	return 0;
 }
 
+// function that is used to get the position of the joystick
 joy_position JOY_getPosition(void) {
 	joy_position position;
 	uint8_t x, y;
@@ -75,6 +83,7 @@ joy_position JOY_getPosition(void) {
 	return position;
 }
 
+//function to find the direction of the joystick, for use in the menu, represented both as a string and an interger
 joy_position JOY_getDirection(void) {
 	joy_position position;
 	
@@ -106,7 +115,7 @@ joy_position JOY_getDirection(void) {
 	
 	return position;
 }
-
+//find the slider position, for both sliders
 slider_position JOY_getSliderPosition(void) {
 	slider_position position;
 	uint8_t l, r;
