@@ -110,37 +110,36 @@ int main(void)
 	
 	while(1){
 	joy_pos = JOY_getDirection();
-	slider_pos = JOY_getSliderPosition();
-	CAN_message_send(&can_msg_send);
+
 	//init_menu();
-	//printf("Hoyre knapp: %d, ", joy_button(0));
-	//printf("Venstre knapp: %d, ", joy_button(1));
-	//printf("x: %d ,",joy_pos.x);
-	//printf("y: %d ,",joy_pos.y);
+	printf("Hoyre knapp: %d, ", joy_button(0));
+	printf("Venstre knapp: %d, ", joy_button(1));
+	printf("x: %d ,",joy_pos.x);
+	printf("y: %d ,",joy_pos.y);
+	printf("Retning: %s\n\r",joy_pos.direction);
 	
+	//can_msg_send.data[0] = joy_pos.x;
+	//can_msg_send.data[1] = joy_pos.y;
 	
-	printf("Slider: %d\n\r",slider_pos.left);
+ 			can_msg_send.data[0] = 0x10;
+ 			i=i+1;
+ 			if (i>0xFF)
+ 			{
+ 				i=0;
+ 			}
+ 			can_msg_send.data[1] = i;
 	
-	can_msg_send.data[0] = joy_pos.x;
-	can_msg_send.data[1] = slider_pos.left;
 	CAN_message_send(&can_msg_send);
-	
-	
-		//can_msg_send.data[1] = joy_pos.y;
-//  			can_msg_send.data[0] = 0x10;
-//  			i=i+1;
-//  			if (i>0xFF)
-//  			{
-//  				i=0;
-//  			}
-//  			can_msg_send.data[1] = i;
-// 	
 	can_msg_receive = CAN_data_receive();
 	x=can_msg_receive.data[0];
 	y=can_msg_receive.data[1];
-	//printf("y1 er %d \n\r",x);
-	//printf("y2 er %d \n\r",y);
- 	CAN_message_send(&can_msg_send);
+ 	printf("y1 er %02x \n\r",x);
+	printf("y2 er %02x \n\r",y);
+	_delay_ms(250);
+
+
+
+
 	}
 
 	return 0;

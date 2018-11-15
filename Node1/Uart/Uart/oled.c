@@ -5,6 +5,8 @@
 #include "figures.h"
 #include "oled.h"
 #include "sram.h"
+#include <util/delay.h>
+#include "Joystick.h"
 
 //Address for the OLED commands
 volatile char *OLED_cmd = (char *) 0x1000;
@@ -166,7 +168,18 @@ int OLED_print_char(char c) {
 	return 0;
 }
 
-int OLED_print_startscr(int col) {  //fig = figurnummer, col = kolonnenummer (hvor på skjermen skal figuren printes)
+int OLED_print_animation(char c){
+	for (int j=8; j >= 0; j--){
+		OLED_clear();
+		for (int i=0; i < 8-j; i++){
+			*OLED_data = pgm_read_byte(&font[c-' '][i]);
+		}
+		_delay_ms(50);
+	}
+	return 0;
+}
+
+int OLED_print_startscr(int col) {  //col = kolonnenummer (hvor på skjermen skal figuren printes)
 	//Write the complete figure
 	for (int y = 0; y < 7; y++){
 		OLED_pos(y, col);
@@ -191,116 +204,35 @@ int OLED_print(char *data) {
 	return 0;
 }
 
-// int OLED_sram_clear_line(uint8_t line) {
-// 	OLED_goto_line(line);
-// 	
-// 	//Clear the page
-// 	for (int i = 0; i < 128; i++) {
-// 		SRAM_write(page*128 + i, 0);
-// 	}
-// 	
-// 	OLED_home();
-// 	
-// 	return 0;
-// }
-// 
-// int OLED_sram_clear(void) {
-// 	//Clear every page
-// 	for (int k = 0; k < 8; k++) {
-// 		OLED_sram_clear_line(k);
-// 	}
-// 	
-// 	return 0;
-// }
-// 
-// int OLED_sram_print_char(char c) {
-// 	//Write the complete character
-// 	for (int i = 0; i < FONTWIDTH; i++) {
-// 		SRAM_write(page*128 + col + i, pgm_read_byte(&font[c-' '][i]));
-// 	}
-// 	//Increment the column
-// 	col += FONTWIDTH;
-// 	
-// 	return 0;
-// }
-// 
-// int OLED_sram_print(char *data) {
-// 	int i = 0;
-// 	
-// 	//Write the complete string
-// 	while(data[i] != '\0'){
-// 		OLED_sram_print_char(data[i]);
-// 		i++;
-// 	}
-// 	
-// 	return 0;
-// }
-// 
-// int OLED_sram_draw_mario(void) {
-// 	OLED_home();
-// 
-// 	for (int j = 0; j < 8; j++) {
-// 		for(int i = 0; i < 24; i++) {
-// 			SRAM_write(j*128 + i, pgm_read_byte(&mario[j][i]));
-// 		}
-// 	}
-// 
-// 	return 0;
-// }
-// 
-// int OLED_sram_draw_mushroom(void) {
-// 	for (int j = 0; j < 4; j++) {
-// 		for(int i = 0; i < 32; i++) {
-// 			SRAM_write((j+page)*128 + (i+col), pgm_read_byte(&mushroom[j][i]));
-// 		}
-// 	}
-// 
-// 	return 0;
-// }
-// 
-// void OLED_refresh(void) {
-// 	//Print the screen from the SRAM
-// 	for (int line = 0; line < 8; line++) {
-// 		OLED_goto_line(line);
-// 		for (int col = 0; col < 128; col++) {
-// 			*OLED_data = SRAM_read(line*128 + col);
-// 		}
-// 	}
-// }
-// 
-// int OLED_draw_circle(uint8_t x, uint8_t y, uint8_t r) {
-// 	int circle;
-// 	
-// 	if (r < 8) {
-// 		circle = r - 1;
-// 		} else {
-// 		return -1;
-// 	}
-// 	
-// 	//Set position
-// 	OLED_goto_line(x);
-// 	if (y < 128) {
-// 		*OLED_cmd = 0x00 + (y >> 4);
-// 		*OLED_cmd = 0x10 + (y >> 4);
-// 	}
-// 
-// 	//Draw circle (first part)
-// 	for(int i = 0; i < 16; i++) {
-// 		*OLED_data = pgm_read_byte(&circles[circle][i]);
-// 	}
-// 	
-// 	//Set position
-// 	OLED_goto_line(x+1);
-// 	if (y < 128) {
-// 		*OLED_cmd = 0x00 + (y >> 4);
-// 		*OLED_cmd = 0x10 + (y >> 4);
-// 	}
-// 	
-// 	//Draw circle (second part)
-// 	for(int i = 16; i < 32; i++) {
-// 		*OLED_data = pgm_read_byte(&circles[circle][i]);
-// 
-// 	}
-// 
-// 	return 0;
-// }
+int OLED_print_name(void){
+	char* name = "^^^";
+	char* currentchar = "A";
+	uint8_t namesubmitted = 0;
+	joy_position joy_pos;
+	OLED_clear();
+	OLED_pos(2,2);
+	OLED_print("New Highscore!");
+	OLED_pos(3,2);
+	OLED_print("Write your name");
+	OLED_pos(7,2);
+	OLED_print("Press a key to continue");
+	joy_pos = JOY_getDirection();
+	_delay_ms(50);
+	OLED_pos(5,2);
+	strcpy(name, "^^^");
+	strcpy(currentchar, "A");
+	strcat(name, currentchar);
+	while (namesubmitted == 0){
+		if (joy_pos.dir == 1){
+			OLED_print(name);
+		}		
+		else if (joy_pos.dir == 2){
+			OLED_print(name);
+		}	
+		else if (joy_button(0) == 1){
+			namesubmitted = 1;
+			break;
+		}
+	}
+	return name;
+}

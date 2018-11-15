@@ -37,17 +37,10 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../adc.c \
 ../can.c \
-../DAC_driver.c \
-../IR.c \
 ../main.c \
 ../MCP2515.c \
-../Motor_controller.c \
-../MOTOR_driver.c \
 ../spi.c \
-../TIMER.c \
-../TWI_MASTER.c \
 ../UART.c
 
 
@@ -58,59 +51,31 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-adc.o \
 can.o \
-DAC_driver.o \
-IR.o \
 main.o \
 MCP2515.o \
-Motor_controller.o \
-MOTOR_driver.o \
 spi.o \
-TIMER.o \
-TWI_MASTER.o \
 UART.o
 
 OBJS_AS_ARGS +=  \
-adc.o \
 can.o \
-DAC_driver.o \
-IR.o \
 main.o \
 MCP2515.o \
-Motor_controller.o \
-MOTOR_driver.o \
 spi.o \
-TIMER.o \
-TWI_MASTER.o \
 UART.o
 
 C_DEPS +=  \
-adc.d \
 can.d \
-DAC_driver.d \
-IR.d \
 main.d \
 MCP2515.d \
-Motor_controller.d \
-MOTOR_driver.d \
 spi.d \
-TIMER.d \
-TWI_MASTER.d \
 UART.d
 
 C_DEPS_AS_ARGS +=  \
-adc.d \
 can.d \
-DAC_driver.d \
-IR.d \
 main.d \
 MCP2515.d \
-Motor_controller.d \
-MOTOR_driver.d \
 spi.d \
-TIMER.d \
-TWI_MASTER.d \
 UART.d
 
 OUTPUT_FILE_PATH +=NODE2atmega.elf
@@ -127,20 +92,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
