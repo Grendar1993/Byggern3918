@@ -31,6 +31,7 @@ int CAN_init(void) {
 	
 	//Enable normal mode
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANSTAT));
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
@@ -107,7 +108,7 @@ int CAN_transmit_complete(void) {
 
 
 can_msg CAN_data_receive(void) {
-	printf("asdfassdf\n\r");
+	//printf("asdfassdf\n\r");
 	uint8_t i;
 	can_msg message = {0};
 	

@@ -31,6 +31,9 @@ int CAN_init(void) {
 	
 	//Enable normal mode
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANSTAT));
+	printf("can er i %02x mode\n\r", MCP_read(MCP_CANINTF));
+	printf("can error i %02x mode\n\r", MCP_read(MCP_EFLG));
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
@@ -141,21 +144,21 @@ can_msg CAN_data_receive(void) {
 }
 
 //Interrupt service routine for CAN bus
-ISR(INT2_vect) {
+ISR(INT2_vect){
 //	_delay_ms(10);
 	CAN_int_vect();
-   printf("INTERRUPT\r\n");
-// 	uint8_t interrupt = MCP_read(MCP_CANINTF);
+ //  printf("INTERRUPT\r\n");
+ 	uint8_t interrupt = MCP_read(MCP_CANINTF);
 // 
-// 	if (interrupt & MCP_RX0IF){
-// 		rx_flag = 1;
-// 		//clear CANINTF.RX0IF
-// 		MCP_bit_modify(MCP_CANINTF, 0x01, 0x00);
-// 	}
-// 	else if (interrupt & MCP_RX1IF){
-// 		rx_flag = 1;
-// 		// clear CANINTF.RX1IF
-// 		MCP_bit_modify(MCP_CANINTF, 0x02, 0x00);
-// 	}
+	if (interrupt & MCP_RX0IF){
+		rx_flag = 1;
+		//clear CANINTF.RX0IF
+		MCP_bit_modify(MCP_CANINTF, 0x01, 0x00);
+	}
+	else if (interrupt & MCP_RX1IF){
+		rx_flag = 1;
+		// clear CANINTF.RX1IF
+		MCP_bit_modify(MCP_CANINTF, 0x02, 0x00);
+	}
 }
 
