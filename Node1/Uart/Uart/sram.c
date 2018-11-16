@@ -1,6 +1,11 @@
 #include <avr/io.h>
 #include <stdio.h>
 
+/*
+Driver that enables the use of external SRAM memory IC
+*/
+
+//function to set up SRAM
 int SRAM_init(void) {
 	//Enable the external memory interface/4 bits address
 	MCUCR |= (1<<SRE);
@@ -9,6 +14,7 @@ int SRAM_init(void) {
 	return 0;
 }
 
+//function that makes it easier to write to external memory
 int SRAM_write(unsigned int address, unsigned int data) {
 	//Start address for the SRAM
 	volatile char *ext_ram = (char *) 0x1800;
@@ -19,6 +25,8 @@ int SRAM_write(unsigned int address, unsigned int data) {
 	return 0;
 }
 
+
+//function that makes it easier to read external memory
 unsigned int SRAM_read(unsigned int address) {
 	//Start address for the SRAM
 	volatile char *ext_ram = (char *) 0x1800;
@@ -27,6 +35,7 @@ unsigned int SRAM_read(unsigned int address) {
 	return ext_ram[address];
 }
 
+//function for testing if teh SRAM works as intended, small amount of errors is ok, might just be noise.
 void SRAM_test(void) {
 	//Start address for the SRAM
 	volatile char *ext_ram = (char *) 0x1800;
