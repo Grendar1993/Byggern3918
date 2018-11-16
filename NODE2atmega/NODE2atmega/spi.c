@@ -32,16 +32,16 @@ void SPI_init( void )
 // 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 
 
-printf("sgsdgsgsdgsdg");
+//printf("sgsdgsgsdgsdg");
 DDRB |= (1<<SPI_MOSI) | (1<<SPI_SCK) | (1<<SPI_SS) | (1<<PB0);
 
 //Set MISO as input pin
 DDRB &= ~(1<<SPI_MISO);
 
-printf("ports set");
+printf("ports set \r\n");
 //Enable SPI in master mode and set clock rate fosc/16
 SPCR = (1<<SPE) | (1<<MSTR) | (0<<SPR1) | (1<<SPR0);	
-printf("spi enable");
+printf("spi enable \r\n");
 	
 	
 }

@@ -13,6 +13,7 @@
 #include <avr/io.h>
 
 uint8_t IR_read( void );
+uint8_t Lives_lost(void);
 
 
 #endif /* IR_H_ */

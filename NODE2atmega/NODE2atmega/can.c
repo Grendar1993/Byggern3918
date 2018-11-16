@@ -14,7 +14,6 @@
 //#include <util/delay.h>
 #include "setup.h"
 
-enum interrupt_flags interrupt_flag = no_flag;
 
 
 
@@ -72,7 +71,7 @@ int CAN_message_send(can_msg* message) {
 		} else {
 		if (CAN_error() < 0) {
 			return -1;
-		}
+ 		}
 	}
 	
 	return 0;
@@ -100,31 +99,26 @@ int CAN_transmit_complete(void) {
 	}
 }
 
- int CAN_int_vect(void) {
- 	//Clear interrupt flag
-  	MCP_bit_modify(MCP_CANINTF, MCP_RXF0SIDL, MCP_RXF0SIDH);
-  	rx_flag = 1;
- 	return 0;
- }
+ 
 
 
 
 can_msg CAN_data_receive(void) {
-	printf("asdfassdf\n\r");
+	//printf("asdfassdf\n\r");
 	uint8_t i=0;
-	can_msg message;
+	can_msg message={0};
 	
 	//Check if RX buffer has a message
-	printf("RX: %d\n\r", rx_flag);
+	//printf("RX: %d\n\r", rx_flag);
 	if (rx_flag == 1 ) {
-		printf("LESER\n\r");
+		//printf("LESER\n\r");
 		//Get message id
 		message.id  = (MCP_read(MCP_RXB0SIDH) << 3) | (MCP_read(MCP_RXB0SIDL) >> 5);
 		
 		//Get message length
 		//message.length = (MCP_CANCTRL) & (MCP_read(MCP_RXB0DLC));
 		message.length = (MCP_read(MCP_RXB0CTRL+5) & 0x0F);
-		printf("len %d\n\r", message.length);
+		//printf("len %d\n\r", message.length);
 		
 		//Get message data
 		for(i = 0; i < message.length; i++) {
@@ -145,20 +139,9 @@ can_msg CAN_data_receive(void) {
 
 //Interrupt service routine for CAN bus
 ISR(INT2_vect){
-//	_delay_ms(10);
-	CAN_int_vect();
- //  printf("INTERRUPT\r\n");
- 	uint8_t interrupt = MCP_read(MCP_CANINTF);
-// 
-	if (interrupt & MCP_RX0IF){
-		rx_flag = 1;
-		//clear CANINTF.RX0IF
-		MCP_bit_modify(MCP_CANINTF, 0x01, 0x00);
-	}
-	else if (interrupt & MCP_RX1IF){
-		rx_flag = 1;
-		// clear CANINTF.RX1IF
-		MCP_bit_modify(MCP_CANINTF, 0x02, 0x00);
-	}
+MCP_bit_modify(MCP_CANINTF, MCP_RXF0SIDL, MCP_RXF0SIDH);
+rx_flag = 1;
+	
+ 
 }
 

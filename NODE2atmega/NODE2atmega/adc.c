@@ -20,7 +20,7 @@ void ADC_init( void )
 	// Start conversion
 	ADCSRA |= (1 << ADSC);
 	
-	printf("adc value is %d \n\r", ADCH);
+	//printf("adc value is %d \n\r", ADCH);
 }
 
 uint8_t ADC_read( void )
@@ -35,6 +35,6 @@ uint8_t ADC_read( void )
 	while(ADCSRA & (1 << ADSC));
 	
 	// Read converted data
-	printf("adc value is %d \n\r", ADCH);
+	//printf("adc value is %d \n\r", ADCH);
 	return ADCH;
 }
