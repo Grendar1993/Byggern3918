@@ -16,7 +16,7 @@ void set_servo(int servo_rettning){
 		
 		float dir = (float)servo_rettning;
 		
-		float servo_pw = dir/200000.0 + 0.0015;
+		float servo_pw = dir/200000+0.0015;
 		
 		if (servo_pw < min_pw) {
 			servo_pw = min_pw;

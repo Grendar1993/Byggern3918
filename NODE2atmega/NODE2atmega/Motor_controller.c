@@ -16,20 +16,23 @@
 #include "can.h"
 #include "MOTOR_driver.h"
 #include "Motor_controller.h"
-#include <math.h>
+#include "math.h"
 #include <util/delay.h>
 
 float pos_min = 86;
 float pos_max = 9200;
 float current_pos = -86;
-int16_t ref;
-double  prev_error;
+static int16_t ref;
+static double  prev_error = 0;
+static double  prev_prev_error = 0;
+static double prev_padrag = 0;
+int16_t prev_ref_update;
+int16_t terskel = 150;
 
 
 
 ISR(TIMER2_OVF_vect){
 	PID_alg(ref);
-	
 }
 
 void PID_init(){
@@ -53,42 +56,63 @@ void PID_init(){
 
 int16_t update_ref(int16_t oppdatert_ref){
 	ref=oppdatert_ref;
+	return ref;
 }
 
 void PID_alg(int16_t ref){
-float kp=1;
-float Ti=1;
-float h=0.016;
-// float k= 255;
-// float k_1 = 9200;
-int32_t possisjon = (motor_read_rotation(0)*-1);
+int16_t padrag;
+int16_t error;
+double kp=1.5;
+double Ti=0.5;
+double h=0.016;
+//double Td= 0.02;
+int16_t possisjon;
+
+//beregning av possisjon gjør om 0-9200 til 0-255
+possisjon = (motor_read_rotation(0)*-1);
 possisjon = possisjon * 0.027;
-int16_t error = ref - possisjon;
-prev_error = prev_error + error;
-int32_t padrag = kp*error + h*Ti*error;
 
-//hindrer at integratoren bygger seg for mye op
-if(possisjon==error){
-	prev_error=0;
-}
+// beregner error
+error = ref - possisjon;
 
-//printf("padrag = %li, possisjon = %li \r\n", padrag, possisjon);
+// regulator algoritme (Regtekboka)
+padrag = prev_padrag + kp*((1 + h/Ti)*error-prev_error);
+// prøve en PID
+//padrag = prev_padrag + kp*((1 + h/Ti + Td/h)*error+(-1-((2*Td)/h) )*prev_error + (Td/h)*prev_prev_error);
+//printf("Padrag: %d \r\n",padrag);
 
-if(padrag>255){
-	padrag = 100;
-}
-else if(padrag<-255){
-	padrag=-100;
-}	
-if(signbit(padrag)==signbit(-1)){
-	motor_set_direction(LEFT);
-}
-else if(signbit(padrag)==signbit(1)){
-	motor_set_direction(RIGHT);
-}
-padrag = abs(padrag);
-//if(padrag<50){
-//	padrag=50;
-//}
+//legger limit på hastighet
+if(padrag>terskel){
+	padrag = terskel;}
+else if(padrag<-terskel){
+	padrag=-terskel;}	
+
+//velger rettning
+if(padrag<0){
+	motor_set_direction(LEFT);}
+else{
+	motor_set_direction(RIGHT);}
+	
+//oppdaterer variabler
+prev_prev_error=prev_error;
+prev_error=error;
+prev_padrag=padrag;
+
+// setter ut padraget
+padrag=abs(padrag);
 motor_set_speed(padrag);
+}
+
+void PID_diff(vanskelighetsgrad_t vanskelighetsgrad){
+	switch (vanskelighetsgrad){
+		case EASY:
+				terskel=150;
+				break;
+		case MEDIUM:
+				terskel=200;
+				break;
+		case HARD:
+				terskel=255;
+				break;	
+	}
 }
