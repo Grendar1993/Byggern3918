@@ -36,7 +36,7 @@ int CAN_init(void) {
 	//check if can is in normal mode, for debugging
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
-		printf("ERROR..ERROR...LOOPBACK NOT WORKING");
+		printf("ERROR..ERROR...NORMAL MODE NOT WORKING");
 		return 1;
 	}
 	
@@ -53,7 +53,7 @@ int CAN_message_send(can_msg* message) {
 	//Check if there is no pending transmission
 	if (CAN_transmit_complete()) {
 		
-		//Set the message id (use standard identifier)
+		//Set the message id
 		MCP_write(MCP_TXB0SIDH, (int8_t)(message->id >> 3));
 		MCP_write(MCP_TXB0SIDL, (int8_t)(message->id << 5));
 		MCP_write(MCP_TXB0EID8, 0);

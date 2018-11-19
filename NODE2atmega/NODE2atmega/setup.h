@@ -9,7 +9,7 @@
 #ifndef SETUP_H_
 #define SETUP_H_
 
-// #define F_CPU 4912500 /*4912500UL*/
+// #define F_CPU 16000000
 // #define BAUD 9600
 // #define UBRREG F_CPU/16/BAUD-1
 

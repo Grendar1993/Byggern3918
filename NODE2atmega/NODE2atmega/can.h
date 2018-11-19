@@ -10,14 +10,16 @@
 #define CAN_H_
 
 #include <avr/io.h>
-
+ /*
+ Structure that makes it easier to construct a message to be send in CAN,
+ contains id, length and the data to be send in the message, can contain at most 8 byte data.
+ */
 typedef struct can_msg{
 	unsigned int id;
 	uint8_t length;		// max 8
 	uint8_t data[8];
 }can_msg;
 
-enum interrupt_flags {no_flag, RX0, RX1};
 
 int CAN_init(void);
 int CAN_message_send(can_msg* message);

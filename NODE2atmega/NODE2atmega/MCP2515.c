@@ -15,14 +15,13 @@
 #include <util/delay.h>
 #include <avr/sfr_defs.h>
 
+//this driver defines functions that makes it faster and easier to use the MCP-IC to send messegaes between the microcontroller and the MCP via SPI
 
+//function to set up the MCP for use
 uint8_t MCP_init( void )
 {
-//	#line 666 "the void"
-//	#error "please sacrifice a lamb"
-	SPI_init();
+		SPI_init();
 	MCP_reset();
-	printf("mcp reset");
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	
@@ -33,6 +32,7 @@ uint8_t MCP_init( void )
 	return 0;
 }
 
+//function to reset the MCP
 void MCP_reset( void )
 {
 	// Lower the _CS pin
@@ -43,6 +43,8 @@ void MCP_reset( void )
 	SPI_set_ss(1);
 }
 
+
+//function that lets us read register in the MCP
 uint8_t MCP_read( uint8_t address )
 {
 	uint8_t received;
@@ -52,12 +54,14 @@ uint8_t MCP_read( uint8_t address )
 	SPI_send(MCP_READ);
 	// Send 8-bit address
 	SPI_send(address);
-	// Send dummy data and receive data from MCP2515 because extra receive function is stupid
+	// Send dummy data and receive data from MCP2515
 	received = SPI_send(0);
 	SPI_set_ss(1);
 	return received;
 }
 
+
+//function that lets us write to registers in the MCP
 void MCP_write( uint8_t address, uint8_t data )
 {
 	SPI_set_ss(0);
@@ -67,6 +71,8 @@ void MCP_write( uint8_t address, uint8_t data )
 	SPI_set_ss(1);
 }
 
+
+//Asking to send message via a transmission channel, only use TX0 in this project.
 // RTS command is either MCP_RTS_TX0, MCP_RTS_TX1, MCP_RTS_TX2 or MCP_RTS_ALL
 void MCP_request_to_send( uint8_t RTS_command )
 {
@@ -75,6 +81,8 @@ void MCP_request_to_send( uint8_t RTS_command )
 	SPI_set_ss(1);
 }
 
+
+//function that lets us read the status of the MCP, is useful for debugging
 uint8_t MCP_read_status()
 {
 	SPI_set_ss(0);
@@ -85,6 +93,8 @@ uint8_t MCP_read_status()
 	return status;
 }
 
+
+//function that lets us change the settings of the MCP
 void MCP_bit_modify( uint8_t address, uint8_t mask, uint8_t data )
 {
 	SPI_set_ss(0);

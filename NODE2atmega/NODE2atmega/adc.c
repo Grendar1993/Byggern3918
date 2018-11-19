@@ -25,11 +25,6 @@ void ADC_init( void )
 	
 	// Start conversion
 	ADCSRA |= (1 << ADSC);
-	
-<<<<<<< HEAD
-=======
-	//printf("adc value is %d \n\r", ADCH);
->>>>>>> 5b99161baebcbfc615a945cd371ebe55794bc45a
 }
 
 
@@ -44,9 +39,6 @@ uint8_t ADC_read( void )
 	while(ADCSRA & (1 << ADSC));
 	
 	// Read converted data
-<<<<<<< HEAD
-=======
-	//printf("adc value is %d \n\r", ADCH);
->>>>>>> 5b99161baebcbfc615a945cd371ebe55794bc45a
+
 	return ADCH;
 }

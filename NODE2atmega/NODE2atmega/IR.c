@@ -17,6 +17,11 @@ int ir_val;
 int prev_ir_val = 0;
 int life=0;
 
+//Driver that reads the ADC value connected to the photo diode.
+//Contains a small filter, that takes the average of the last 4 values
+//Also contains a function that gives a warning if the photo diode receives no IR light
+//used to reduce lives
+
 uint8_t IR_read( void )
 {
 	static uint8_t values[4];
@@ -30,18 +35,17 @@ uint8_t IR_read( void )
 		}
 	}
 	avg = avg / 4;
-	//printf("dfad %d \n\r",avg);
 	return avg;
 }
 
 
 uint8_t Lives_lost(void){
 	 		ir_val = IR_read();
-	 		printf("ting er av verdi %d\n\r",ir_val);
 	 		if (ir_val - prev_ir_val != 0){
 	 			if (ir_val <= 3){
-					 // mister liv
+					 // lose a life
 					 life=1;
+					// wait for the ball to be removed
 	 				while (ir_val<6)
 	 				{
 	 					_delay_ms(10);

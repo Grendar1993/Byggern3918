@@ -16,6 +16,9 @@
 
 int8_t prev_shoot = 1;
 
+//Driver that sets up the output pin on NODE 2, that is used to trigger the solenoid.
+//If PB6 is low, the solenoid will "shot out" for 20ms.
+
 void sol_init(){
 		// Set pin 12 to output
 		set_bit(DDRB, PB6);

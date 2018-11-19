@@ -11,32 +11,32 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <stdio.h>
-//#include <util/delay.h>
 #include "setup.h"
 
-
+/*
+This driver contains the functions needed to receive and send can messages.
+As well as the setup for CAN, and an interrupt from the microcontroller
+*/
 
 
 volatile uint8_t rx_flag = 0;
 
+//function to initiate can, and set it in the right mode
 int CAN_init(void) {
 	//Enter config mode
 	MCP_init();
 	
-	//RX0 - Turn masks/filters off, rollover disabled?
+	//RX0 - Turn masks/filters off, rollover disabled
 	MCP_bit_modify(MCP_RXB0CTRL, MCP_FILTER_OFF, 0b01101000);
-	//Enable interrupt when message is received (RX0IE = 1)
+	//Enable interrupt when message is received
 	MCP_bit_modify(MCP_CANINTE, MCP_RX_INT, 0x01);
 	
 	//Enable normal mode
 	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
-	printf("can er i %02x mode\n\r", MCP_read(MCP_CANSTAT));
-	printf("can er i %02x mode\n\r", MCP_read(MCP_CANINTF));
-	printf("can error i %02x mode\n\r", MCP_read(MCP_EFLG));
 	
 	uint8_t value = MCP_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_NORMAL){
-		printf("ERROR..ERROR...LOOPBACK NOT WORKING");
+		printf("ERROR..ERROR...NORMAL MODE NOT WORKING");
 		return 1;
 	}
 	
@@ -45,13 +45,15 @@ int CAN_init(void) {
 	return 0;
 }
 
+
+//Function to send CAN messages, sets, id, length and puts data into data 1-8
 int CAN_message_send(can_msg* message) {
 	uint8_t i;
 	
 	//Check if there is no pending transmission
 	if (CAN_transmit_complete()) {
 		
-		//Set the message id (use standard identifier)
+		//Set the message id
 		MCP_write(MCP_TXB0SIDH, (int8_t)(message->id >> 3));
 		MCP_write(MCP_TXB0SIDL, (int8_t)(message->id << 5));
 		MCP_write(MCP_TXB0EID8, 0);
@@ -77,6 +79,8 @@ int CAN_message_send(can_msg* message) {
 	return 0;
 }
 
+
+//Function that checks for error
 int CAN_error(void) {
 	uint8_t error = MCP_read(MCP_TXB0CTRL);
 	
@@ -102,23 +106,18 @@ int CAN_transmit_complete(void) {
  
 
 
-
+//function that makes it possible to receive can messages
 can_msg CAN_data_receive(void) {
-	//printf("asdfassdf\n\r");
 	uint8_t i=0;
 	can_msg message={0};
 	
 	//Check if RX buffer has a message
-	//printf("RX: %d\n\r", rx_flag);
 	if (rx_flag == 1 ) {
-		//printf("LESER\n\r");
 		//Get message id
 		message.id  = (MCP_read(MCP_RXB0SIDH) << 3) | (MCP_read(MCP_RXB0SIDL) >> 5);
 		
 		//Get message length
-		//message.length = (MCP_CANCTRL) & (MCP_read(MCP_RXB0DLC));
 		message.length = (MCP_read(MCP_RXB0CTRL+5) & 0x0F);
-		//printf("len %d\n\r", message.length);
 		
 		//Get message data
 		for(i = 0; i < message.length; i++) {
@@ -129,15 +128,12 @@ can_msg CAN_data_receive(void) {
 		//Clear interrupt flag
 		rx_flag = 0;
 	}
-		//} else {
-		//Message not received
-		//message.id = -1;
-	//}
+	
 	
 	return message;
 }
 
-//Interrupt service routine for CAN bus
+//Interrupt for CAN
 ISR(INT2_vect){
 MCP_bit_modify(MCP_CANINTF, MCP_RXF0SIDL, MCP_RXF0SIDH);
 rx_flag = 1;

@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include "UART.h"
 
+/*
+Function that enables the use of RS 232 serial communication via UART.
+*/
 
+//function that sets up the UART and serial communication parameters
 void UART_Init(unsigned int ubrr)
 {
 	// Baud rate
@@ -21,6 +25,8 @@ void UART_Init(unsigned int ubrr)
 	fdevopen(UART_TX, UART_RX);
 }
 
+
+//function that makes sending data over UART easier
 int UART_TX(char data, FILE * _in){
 	(void)(_in);
 	
@@ -32,6 +38,7 @@ int UART_TX(char data, FILE * _in){
 	return 0;
 }
 
+//function for sending data over UART
 int UART_RX(FILE * _in ){
 	(void)(_in);
 	while( !(UCSR0A & (1 << RXC0)) );
