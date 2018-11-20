@@ -34,8 +34,8 @@ uint8_t SPI_send(uint8_t data)
 	// Start transmission (write to data register)
 	SPDR = data;
 	// Wait for transmission complete
-	while(!(SPSR & (1 << SPIF)));
-	
+	//while(!(SPSR & (1 << SPIF)));
+	_delay_us(200);
 	return SPDR;
 	
 }

@@ -26,7 +26,7 @@ int CAN_init(void) {
 	MCP_init();
 	
 	//Turn masks/filters off, rollover disabled
-	MCP_bit_modify(MCP_RXB0CTRL, MCP_FILTER_OFF, 0b01101000);
+	MCP_bit_modify(MCP_RXB0CTRL, MCP_FILTER_OFF, 0b01101100);
 	//Enable interrupt when message is received
 	MCP_bit_modify(MCP_CANINTE, MCP_RX_INT, 0x01);
 	
@@ -108,7 +108,7 @@ int CAN_transmit_complete(void) {
 //function that makes it possible to receive can messages
 can_msg CAN_data_receive(void) {
 	uint8_t i;
-	can_msg message = {0};
+	can_msg message;
 	
 	//Check if RX buffer has a message
 	if (rx_flag == 1) {
@@ -122,7 +122,7 @@ can_msg CAN_data_receive(void) {
 		//Get message data
 		for(i = 0; i < message.length; i++) {
 			message.data[i] = MCP_read(MCP_RXB0D0 + i);
-		}
+	}
 		
 		//Clear interrupt flag
 		rx_flag = 0;

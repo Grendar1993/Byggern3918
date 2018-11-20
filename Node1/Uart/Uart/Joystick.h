@@ -9,8 +9,8 @@ uint8_t mid_x, mid_y;
 typedef struct {
 	int8_t x;
 	int8_t y;
-	int8_t numdirection; // 0 = Neutral, 1 = Right, 2 = Left, 3 = Up, 4 = Down
-	char *direction;
+	int8_t dir;		// 1 = UP, 2 = DOWN
+	int8_t sidedir; // 1 = RIGHT, 2 = LEFT
 } joy_position;
 
 //struct for the slider positions, we have two sliders, left and right slider

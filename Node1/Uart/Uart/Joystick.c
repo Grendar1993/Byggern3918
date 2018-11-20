@@ -1,8 +1,6 @@
 /*
-This driver sets up functions that makes it easier to convert the values from the joystick and the slider to digital values that can be used by the micocontroller
+This driver sets up functions that makes it easier to convert the values from the joystick and the slider to digital values that can be used by the microcontroller
 */
-
-
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -83,7 +81,7 @@ joy_position JOY_getPosition(void) {
 	return position;
 }
 
-//function to find the direction of the joystick, for use in the menu, represented both as a string and an interger
+//function to find the direction of the joystick, for use in the menu, represented both as a string and an integer
 joy_position JOY_getDirection(void) {
 	joy_position position;
 	
@@ -91,26 +89,22 @@ joy_position JOY_getDirection(void) {
 	position = JOY_getPosition();
 	
 	if(position.x < -45) {
-		position.direction = "LEFT";
-		position.numdirection = 2;
+		position.sidedir = 2;
 		} 
 	else if(position.x > 45) {
-		position.direction = "RIGHT";
-		position.numdirection = 1;
+		position.sidedir = 1;
 	}
 	
 	if(position.y < -45) {
-		position.direction = "DOWN";
-		position.numdirection = 4;
+		position.dir = 2;
 		} 
 	else if(position.y > 45) {
-		position.direction = "UP";
-		position.numdirection = 3;
+		position.dir = 1;
 	}
 	
 	if((position.x >= -44 && position.x <= 44) && (position.y >= -44 && position.y <= 44)){
-		position.direction = "NEUTRAL";
-		position.numdirection = 0;
+		position.dir = 0;
+		position.sidedir = 0;
 	}
 	
 	return position;
