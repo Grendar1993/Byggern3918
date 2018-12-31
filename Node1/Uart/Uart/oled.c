@@ -241,9 +241,12 @@ int OLED_nameprompt(void){			// Prompt the user for their name (four letters) af
 				j = 25;
 			}
 			else if (joy_pos.sidedir == 1){			// "Select" character by moving our joystick to the right, breaking the for-loop and move to choosing the next character
+				if (i < 4){
 				positions[i] = j;
 				endstr[i] = characterstring[positions[i]];
 				break;
+				}
+				else{break;}
 			}
 			else if (joy_button(1) == 0){			// Exit the function when done selecting name by pressing the button. 
 				stopflag = 1;
@@ -324,7 +327,7 @@ int OLED_game(int diff){	// Main function for the game
 		if (!test_bit(PINB,PINB0)){
 			hp_lost=1;
 		}
-		_delay_ms(150);
+		_delay_ms(100);
 		printf("hp_lost: %d \n \r", hp_lost);
 		if (hp_lost == 1){
 			hp_lost = 0;

@@ -49,7 +49,7 @@ int init_menu(void) {
 					OLED_pos(y,x-1);
 					OLED_print("~");
 					OLED_pos(8,1);
-					OLED_print("Press any key");
+					OLED_print("Push B to start");
 					x = x + z*1;
 					y = y + w*0.5;
 					if (y == 6){w = w*-1; counter = counter + 1;}
@@ -680,7 +680,7 @@ int init_menu(void) {
 				if (x == 15){z = z*-1;}													// If the ball hits one of the sides of the screen, invert our speed increment (*-1)
 				if (x == 0){z = z*-1;}
 				joy_pos = JOY_getDirection();
-				int timer = 250/vanskelighetsgrad;
+				int timer = 350/vanskelighetsgrad;
 				my_delay_ms(timer);														// Game speed
 				if (joy_pos.sidedir == 1){												// Moving the joystick to the right moves the slider to the left
 					v = v + 1;

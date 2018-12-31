@@ -35,9 +35,6 @@ int JOY_calibrate(void) {
 // setting the inputs for the pins that the buttons are connected to
 int joy_button(int button){
 	switch (button) {
-		case 0: // joystick button
-			if (!test_bit(PINB,PINB0)) return 1;
-			break;
 		case 1: // left button
 			if (!test_bit(PINB,PINB1)) return 1;
 			break;	
@@ -45,7 +42,7 @@ int joy_button(int button){
 			if (!test_bit(PINB,PINB2)) return 1;
 			break;
 		default:
-				break;
+			break;
 	}
 	return 0;
 }
